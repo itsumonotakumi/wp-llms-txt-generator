@@ -110,9 +110,9 @@ GPL v2 or later（元のプラグインと同じライセンスを継承）
 
 ## 開発者情報
 
-- 元開発者: [rankth](https://profiles.wordpress.org/rankth/)
 - 改修: [いつもの匠](https://twitter.com/itsumonotakumi)
-- ブログ: [モバイル・ガジェットの匠](https://mobile-cheap.jp)
+- ブログ: [ガジェットレビューの匠](https://mobile-cheap.jp)
+- フォーク元プラグインの開発者: [rankth](https://profiles.wordpress.org/rankth/)
 
 ## 連絡先情報
 
