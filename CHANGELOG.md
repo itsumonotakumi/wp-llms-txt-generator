@@ -1,6 +1,6 @@
 # 変更履歴
 
-このプラグインは[LLMS Full TXT Generator](https://wordpress.org/plugins/llms-full-txt-generator/)をフォークして開発されています。
+このプラグインは[LLMs-Full.txt and LLMs.txt Generator](https://wordpress.org/plugins/llms-full-txt-generator/)をフォークして開発されています。
 
 ## [1.9.1] - 2025-03-20 (このフォーク版の最初のリリース)
 

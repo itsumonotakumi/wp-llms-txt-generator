@@ -21,7 +21,7 @@ YouTube: https://www.youtube.com/@itsumonotakumi
  * LLMS TXT and Full TXT Generator
  *
  * サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力するプラグインです。
- * このプラグインは元々rankthによって開発された「LLMS Full TXT Generator」をフォークして拡張したものです。
+ * このプラグインは元々rankthによって開発された「LLMs-Full.txt and LLMs.txt Generator」をフォークして拡張したものです。
  *
  * @package LLMS_TXT_Generator
  * @author rankth (Original Author)

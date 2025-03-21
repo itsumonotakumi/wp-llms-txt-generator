@@ -14,7 +14,7 @@ WordPressサイト内のコンテンツをLLM（大規模言語モデル）の�
 
 このプラグインは、サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。生成されたファイルはLLM（大規模言語モデル）の学習データとして利用できます。
 
-「LLMS TXT and Full TXT Generator」は[WordPress.orgで公開されているLLMS Full TXT Generator](https://wordpress.org/plugins/llms-full-txt-generator/)をフォークして機能拡張したものです。元の開発者[rankth](https://profiles.wordpress.org/rankth/)の貢献に感謝します。
+「LLMs-Full.txt and LLMs.txt Generator」は[WordPress.orgで公開されているLLMs-Full.txt and LLMs.txt Generator](https://wordpress.org/plugins/llms-full-txt-generator/)をフォークして機能拡張したものです。元の開発者[rankth](https://profiles.wordpress.org/rankth/)の貢献に感謝します。
 
 = 免責事項 =
 

@@ -172,9 +172,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         <div class="card">
             <h3><?php esc_html_e('このプラグインについて', 'llms-txt-full-txt-generator'); ?></h3>
             <p><?php esc_html_e('このプラグインはサイト内のコンテンツをllms.txtとllms-full.txtファイルに出力します。LLMの学習データとして利用できます。', 'llms-txt-full-txt-generator'); ?></p>
-            <p><?php esc_html_e('このプラグインは元々、rankthによって開発されたLLMS Full TXT Generatorをベースに、いつもの匠によって機能拡張されたものです。', 'llms-txt-full-txt-generator'); ?></p>
+            <p><?php esc_html_e('このプラグインは元々、rankthによって開発されたLLMs-Full.txt and LLMs.txt Generatorをベースに、いつもの匠によって機能拡張されたものです。', 'llms-txt-full-txt-generator'); ?></p>
             <p><?php echo sprintf(__('ソースコードは<a href="%s" target="_blank">GitHub</a>で公開されています。', 'llms-txt-full-txt-generator'), 'https://github.com/itsumonotakumi/llms-txt-full-txt-generator'); ?></p>
-            <p><?php echo sprintf(__('元のプラグイン: <a href="%s" target="_blank">LLMS Full TXT Generator</a>', 'llms-txt-full-txt-generator'), 'https://wordpress.org/plugins/llms-full-txt-generator/'); ?></p>
+            <p><?php echo sprintf(__('元のプラグイン: <a href="%s" target="_blank">LLMs-Full.txt and LLMs.txt Generator</a>', 'llms-txt-full-txt-generator'), 'https://wordpress.org/plugins/llms-full-txt-generator/'); ?></p>
 
             <h4><?php esc_html_e('免責事項', 'llms-txt-full-txt-generator'); ?></h4>
             <p class="notice notice-warning" style="padding: 10px; margin: 10px 0;"><?php esc_html_e('このプログラムによるいかなる不都合や事故も補償しません。ご使用は自己責任でお願いします。', 'llms-txt-full-txt-generator'); ?></p>
