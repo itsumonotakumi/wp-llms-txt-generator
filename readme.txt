@@ -3,7 +3,7 @@ Contributors: itsumonotakumi, rankth
 Tags: llm, ai, txt, content export, large language model
 Requires at least: 5.0
 Tested up to: 6.4
-Stable tag: 1.9.1
+Stable tag: 1.9.2
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -61,6 +61,11 @@ URLフィルターでは、ワイルドカード（*）を使用してパター�
 4. ファイルに含める投稿タイプを選択し、必要に応じて他の設定を行う
 5. 「生成」タブで「LLMS.txtファイルを生成」ボタンをクリックしてファイルを生成
 
+== Screenshots ==
+
+1. 設定画面 - さまざまな投稿タイプの選択、カスタムヘッダー、URLフィルター、デバッグモードなどの設定ができます
+2. 生成画面 - ファイルの生成状況やステータスを確認できます
+
 == Frequently Asked Questions ==
 
 = llms.txtとllms-full.txtの違いは何ですか？ =
@@ -75,14 +80,13 @@ llms.txtはURLと投稿タイトルのリストのみを含み、llms-full.txt�
 
 自動更新は投稿の追加・更新・削除時にファイルを更新し、定期実行は設定した頻度（毎時/1日2回/毎日/毎週）で自動的にファイルを生成します。
 
-== Screenshots ==
-
-1. 設定画面
-2. 生成画面
-3. URLフィルターの設定例
-4. デバッグモードのログ例
-
 == Changelog ==
+
+= 1.9.2 =
+* 多言語対応を追加（日本語・英語）
+* readme.txtの改善とスクリーンショットの追加
+* UI/UXの細かな調整
+* 内部処理の最適化
 
 = 1.9.1 =
 * 投稿の追加・更新・削除時に自動的にファイルを更新する機能を追加
@@ -102,6 +106,9 @@ llms.txtはURLと投稿タイトルのリストのみを含み、llms-full.txt�
 * オリジナルバージョン by rankth
 
 == Upgrade Notice ==
+
+= 1.9.2 =
+この更新では多言語対応（日本語・英語）が追加され、UIの改善が行われています。
 
 = 1.9.1 =
 この更新では、自動更新機能やURL除外処理の改善など、多くの機能強化が行われています。URLフィルタリングに問題があった場合は、この更新で解決される可能性があります。

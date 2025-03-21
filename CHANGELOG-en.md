@@ -2,6 +2,21 @@
 
 This plugin is a fork of [LLMs-Full.txt and LLMs.txt Generator](https://wordpress.org/plugins/llms-full-txt-generator/).
 
+## [1.9.2] - 2025-03-22
+
+### New Features
+- Added multilingual support (Japanese and English)
+- Improved readme.txt for WordPress.org compliance
+- Added screenshots
+
+### UI/UX Improvements
+- Fine-tuned admin interface UI
+- Enhanced help section content
+
+### Code Quality Improvements
+- Optimized internal processes
+- Improved documentation
+
 ## [1.9.1] - 2025-03-20 (First release of this fork)
 
 ### New Features

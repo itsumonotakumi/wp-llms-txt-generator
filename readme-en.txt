@@ -3,7 +3,7 @@ Contributors: itsumonotakumi, rankth
 Tags: llm, ai, txt, content export, large language model
 Requires at least: 5.0
 Tested up to: 6.4
-Stable tag: 1.9.1
+Stable tag: 1.9.2
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -61,6 +61,11 @@ In URL filters, you can use wildcards (*) to specify patterns:
 4. Select which post types to include in the files and adjust other settings as needed
 5. Click the "Generate LLMS.txt Files" button in the "Generate" tab to create the files
 
+== Screenshots ==
+
+1. Settings screen - Configure various post types, custom headers, URL filters, debug mode and more
+2. Generation screen - Check file generation status and details about the generated files
+
 == Frequently Asked Questions ==
 
 = What's the difference between llms.txt and llms-full.txt? =
@@ -75,14 +80,13 @@ Enable Debug Mode and check the URL processing logs. Logs are saved to `wp-conte
 
 Auto-update updates the files when posts are added, updated, or deleted, while scheduled execution automatically generates files at a set frequency (hourly/twice daily/daily/weekly).
 
-== Screenshots ==
-
-1. Settings screen
-2. Generation screen
-3. URL filter configuration example
-4. Debug mode log example
-
 == Changelog ==
+
+= 1.9.2 =
+* Added multilingual support (Japanese and English)
+* Improved readme.txt and added screenshots
+* Minor UI/UX adjustments
+* Internal process optimization
 
 = 1.9.1 =
 * Added automatic update of files when posts are added, updated, or deleted
@@ -102,6 +106,9 @@ Auto-update updates the files when posts are added, updated, or deleted, while s
 * Original version by rankth
 
 == Upgrade Notice ==
+
+= 1.9.2 =
+This update adds multilingual support (Japanese and English) and includes UI improvements.
 
 = 1.9.1 =
 This update includes many feature enhancements such as automatic updates and improved URL exclusion processing. If you've had issues with URL filtering, they may be resolved with this update.

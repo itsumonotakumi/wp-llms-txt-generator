@@ -2,7 +2,7 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: LLMS TXT and Full TXT Generator 1.9.1\n"
+"Project-Id-Version: LLMS TXT and Full TXT Generator 1.9.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/llms-txt-full-txt-generator\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
