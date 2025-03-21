@@ -82,6 +82,7 @@ class LLMS_TXT_Generator {
         add_action('admin_init', array($this, 'register_settings'));
         add_action('admin_menu', array($this, 'add_admin_menu'));
         add_action('admin_post_generate_llms_txt', array($this, 'handle_generate_llms_txt'));
+        add_action('admin_post_llms_toggle_delete_settings', array($this, 'handle_toggle_delete_settings'));
 
         // フロントエンドに404エラーを出力しないようにファイルをチェック
         add_action('template_redirect', array($this, 'handle_txt_file_requests'));
@@ -762,6 +763,26 @@ class LLMS_TXT_Generator {
      */
     public function scheduled_generation() {
         $this->generate_llms_txt_files(false);
+    }
+
+    /**
+     * 設定削除オプションの切り替えを処理
+     */
+    public function handle_toggle_delete_settings() {
+        if (!current_user_can('manage_options')) {
+            wp_die(__('このページにアクセスするための十分な権限がありません。', 'llms-txt-full-txt-generator'));
+        }
+
+        if (!isset($_POST['llms_settings_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['llms_settings_nonce'])), 'llms_settings_action')) {
+            wp_die(__('無効なnonceが指定されました', 'llms-txt-full-txt-generator'));
+        }
+
+        $delete_all_data = isset($_POST['llms_delete_all_data']) ? true : false;
+        update_option('llms_txt_generator_delete_all_data', $delete_all_data);
+
+        // 設定ページにリダイレクト
+        wp_safe_redirect(add_query_arg('page', 'llms-txt-generator', admin_url('options-general.php')) . '#help-tab');
+        exit;
     }
 }
 

@@ -12,24 +12,35 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
-// プラグインのオプションを削除
-$options = array(
-	'llms_txt_generator_post_types',
-	'llms_txt_generator_include_excerpt',
-	'llms_txt_generator_auto_update',
-	'llms_txt_generator_debug_mode',
-	'llms_txt_generator_schedule_enabled',
-	'llms_txt_generator_schedule_frequency',
-	'llms_txt_generator_custom_header',
-	'llms_txt_generator_include_urls',
-	'llms_txt_generator_exclude_urls',
-);
+// 設定を完全に削除するかどうかのオプション
+// デフォルトではfalseにして、設定を保持するようにします
+$delete_all_options = get_option('llms_txt_generator_delete_all_data', false);
 
-foreach ( $options as $option ) {
-	delete_option( $option );
+if ($delete_all_options) {
+	// プラグインのオプションを削除
+	$options = array(
+		'llms_txt_generator_post_types',
+		'llms_txt_generator_include_excerpt',
+		'llms_txt_generator_auto_update',
+		'llms_txt_generator_debug_mode',
+		'llms_txt_generator_schedule_enabled',
+		'llms_txt_generator_schedule_frequency',
+		'llms_txt_generator_custom_header',
+		'llms_txt_generator_include_urls',
+		'llms_txt_generator_exclude_urls',
+		'llms_txt_generator_delete_all_data', // 自分自身も削除
+	);
+
+	foreach ( $options as $option ) {
+		delete_option( $option );
+	}
+} else {
+	// バージョン情報だけ残して他は消さない
+	// バージョン情報があると次回のインストール時に設定を引き継ぐことができる
+	error_log('LLMS TXT Generator: アンインストール時に設定を保持しました。');
 }
 
-// スケジュールイベントの削除
+// スケジュールイベントの削除（設定保持に関わらず実行）
 $timestamp = wp_next_scheduled( 'llms_txt_generate_schedule' );
 if ( $timestamp ) {
 	wp_unschedule_event( $timestamp, 'llms_txt_generate_schedule' );
@@ -50,12 +61,30 @@ if ( is_multisite() ) {
 	foreach ( $sites as $site ) {
 		switch_to_blog( $site->blog_id );
 
-		// 各サイトのオプションを削除
-		foreach ( $options as $option ) {
-			delete_option( $option );
+		// 各サイトの設定を完全に削除するかどうかのオプションを取得
+		$site_delete_all_options = get_option('llms_txt_generator_delete_all_data', false);
+
+		if ($site_delete_all_options) {
+			// 各サイトのオプションを削除
+			$options = array(
+				'llms_txt_generator_post_types',
+				'llms_txt_generator_include_excerpt',
+				'llms_txt_generator_auto_update',
+				'llms_txt_generator_debug_mode',
+				'llms_txt_generator_schedule_enabled',
+				'llms_txt_generator_schedule_frequency',
+				'llms_txt_generator_custom_header',
+				'llms_txt_generator_include_urls',
+				'llms_txt_generator_exclude_urls',
+				'llms_txt_generator_delete_all_data', // 自分自身も削除
+			);
+
+			foreach ( $options as $option ) {
+				delete_option( $option );
+			}
 		}
 
-		// 各サイトのスケジュールを削除
+		// 各サイトのスケジュールを削除（設定保持に関わらず実行）
 		$timestamp = wp_next_scheduled( 'llms_txt_generate_schedule' );
 		if ( $timestamp ) {
 			wp_unschedule_event( $timestamp, 'llms_txt_generate_schedule' );

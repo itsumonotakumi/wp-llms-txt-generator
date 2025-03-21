@@ -315,6 +315,26 @@ msgstr "Both absolute URLs and relative URLs (paths starting with /) can be used
 msgid "デバッグモードを有効にすると、URL処理の詳細ログが生成されます"
 msgstr "When Debug Mode is enabled, detailed logs of URL processing will be generated"
 
+#: admin-page.php:232
+msgid "高度な設定"
+msgstr "Advanced Settings"
+
+#: admin-page.php:234
+msgid "アンインストール時の設定保持"
+msgstr "Settings Retention on Uninstall"
+
+#: admin-page.php:235
+msgid "デフォルトでは、プラグインをアンインストール（削除）しても設定は保持されます。これにより、再インストール時に以前の設定が自動的に復元されます。"
+msgstr "By default, your settings are retained even when the plugin is uninstalled (deleted). This allows your previous settings to be automatically restored upon reinstallation."
+
+#: admin-page.php:242
+msgid "アンインストール時にすべての設定を削除する"
+msgstr "Delete all settings when uninstalling"
+
+#: admin-page.php:244
+msgid "このオプションを有効にすると、プラグインをアンインストールする際にすべての設定が完全に削除されます。"
+msgstr "When this option is enabled, all settings will be completely removed when you uninstall the plugin."
+
 #: llms-txt-full-txt-generator.php:185
 msgid "設定を保存するには、少なくとも1つの投稿タイプを選択する必要があります。"
 msgstr "You must select at least one post type to save the settings."
