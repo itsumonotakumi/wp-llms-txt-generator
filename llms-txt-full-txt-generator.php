@@ -2,7 +2,7 @@
 /*
 Plugin Name: LLMS TXT and Full TXT Generator
 Plugin URI: https://github.com/itsumonotakumi/llms-txt-full-txt-generator
-Description: サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。LLMの学習データとして利用できます。
+Description: サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。LLMの学習データとして利用できます。 | Outputs your site's content to llms.txt and llms-full.txt files for use as LLM training data.
 Version: 1.9.1
 Author: いつもの匠 (Original by rankth)
 Author URI: https://twitter.com/itsumonotakumi
@@ -22,6 +22,9 @@ YouTube: https://www.youtube.com/@itsumonotakumi
  *
  * サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力するプラグインです。
  * このプラグインは元々rankthによって開発された「LLMs-Full.txt and LLMs.txt Generator」をフォークして拡張したものです。
+ *
+ * This plugin automatically exports your site's posts and pages to llms.txt and llms-full.txt files.
+ * It is a fork of "LLMs-Full.txt and LLMs.txt Generator" originally developed by rankth.
  *
  * @package LLMS_TXT_Generator
  * @author rankth (Original Author)

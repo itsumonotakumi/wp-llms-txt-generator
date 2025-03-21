@@ -16,6 +16,11 @@ WordPressサイト内のコンテンツをLLM（大規模言語モデル）の�
 
 「LLMs-Full.txt and LLMs.txt Generator」は[WordPress.orgで公開されているLLMs-Full.txt and LLMs.txt Generator](https://wordpress.org/plugins/llms-full-txt-generator/)をフォークして機能拡張したものです。元の開発者[rankth](https://profiles.wordpress.org/rankth/)の貢献に感謝します。
 
+= 多言語対応 =
+
+* 日本語（デフォルト）
+* 英語（English）
+
 = 免責事項 =
 
 **このプログラムによるいかなる不都合や事故も補償しません。ご使用は自己責任でお願いします。**

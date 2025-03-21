@@ -1,0 +1,351 @@
+# Copyright (C) 2024 いつもの匠 (Original by rankth)
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: LLMS TXT and Full TXT Generator 1.9.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/llms-txt-full-txt-generator\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-03-21T00:00:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.7.1\n"
+"X-Domain: llms-txt-full-txt-generator\n"
+
+#: admin-page.php:8
+msgid "設定"
+msgstr ""
+
+#: admin-page.php:9
+msgid "生成"
+msgstr ""
+
+#: admin-page.php:10
+msgid "ヘルプ"
+msgstr ""
+
+#: admin-page.php:20
+msgid "基本設定"
+msgstr ""
+
+#: admin-page.php:23
+msgid "投稿タイプを選択"
+msgstr ""
+
+#: admin-page.php:34
+msgid "生成するファイルに含める投稿タイプを選択してください。"
+msgstr ""
+
+#: admin-page.php:38
+msgid "カスタムヘッダーテキスト"
+msgstr ""
+
+#: admin-page.php:41
+msgid "このテキストはllms.txtとllms-full.txtファイルのURLリストの上に表示されます。"
+msgstr ""
+
+#: admin-page.php:45
+msgid "抜粋を含める"
+msgstr ""
+
+#: admin-page.php:48
+msgid "llms-full.txtファイルに投稿の抜粋を含めます。"
+msgstr ""
+
+#: admin-page.php:53
+msgid "更新設定"
+msgstr ""
+
+#: admin-page.php:56
+msgid "投稿の変更時に自動更新"
+msgstr ""
+
+#: admin-page.php:59
+msgid "有効にすると、投稿の追加・更新・削除時に自動的にLLMS.txtファイルが更新されます。"
+msgstr ""
+
+#: admin-page.php:63
+msgid "デバッグモード"
+msgstr ""
+
+#: admin-page.php:66
+msgid "有効にすると、URLフィルタリングに関する詳細なログが生成されます。問題が発生した場合に役立ちます。"
+msgstr ""
+
+#: admin-page.php:70
+msgid "定期的に自動生成"
+msgstr ""
+
+#: admin-page.php:73
+msgid "有効にすると、指定した頻度でLLMS.txtファイルが自動的に生成されます。"
+msgstr ""
+
+#: admin-page.php:77
+msgid "自動生成の頻度"
+msgstr ""
+
+#: admin-page.php:82
+msgid "毎時"
+msgstr ""
+
+#: admin-page.php:83
+msgid "1日2回"
+msgstr ""
+
+#: admin-page.php:84
+msgid "毎日"
+msgstr ""
+
+#: admin-page.php:85
+msgid "毎週"
+msgstr ""
+
+#: admin-page.php:95
+msgid "LLMSファイルを自動生成する頻度を選択してください。"
+msgstr ""
+
+#: admin-page.php:101
+msgid "フィルター設定"
+msgstr ""
+
+#: admin-page.php:104
+msgid "含めるURL"
+msgstr ""
+
+#: admin-page.php:107
+msgid "含めるURLを1行に1つずつ入力してください。*をワイルドカードとして使用できます。空の場合はすべてのURLが含まれます。"
+msgstr ""
+
+#: admin-page.php:111
+msgid "除外するURL"
+msgstr ""
+
+#: admin-page.php:114
+msgid "除外するURLを1行に1つずつ入力してください。*をワイルドカードとして使用できます。"
+msgstr ""
+
+#: admin-page.php:118
+msgid "設定を保存"
+msgstr ""
+
+#: admin-page.php:124
+msgid "LLMS.txtファイルを生成"
+msgstr ""
+
+#: admin-page.php:125
+msgid "下のボタンをクリックすると、現在の設定に基づいてllms.txtとllms-full.txtファイルを生成します。"
+msgstr ""
+
+#: admin-page.php:130
+msgid "LLMS.txtファイルを生成"
+msgstr ""
+
+#: admin-page.php:135
+msgid "ファイルステータス"
+msgstr ""
+
+#: admin-page.php:144
+msgid "LLMS.txtファイル: %s"
+msgstr ""
+
+#: admin-page.php:145
+msgid "最終更新日時: %s"
+msgstr ""
+
+#: admin-page.php:146
+msgid "ファイルサイズ: %s"
+msgstr ""
+
+#: admin-page.php:149
+msgid "LLMS.txtファイルはまだ生成されていません。"
+msgstr ""
+
+#: admin-page.php:155
+msgid "LLMS-Full.txtファイル: %s"
+msgstr ""
+
+#: admin-page.php:156
+msgid "最終更新日時: %s"
+msgstr ""
+
+#: admin-page.php:157
+msgid "ファイルサイズ: %s"
+msgstr ""
+
+#: admin-page.php:160
+msgid "LLMS-Full.txtファイルはまだ生成されていません。"
+msgstr ""
+
+#: admin-page.php:168
+msgid "ヘルプとサポート"
+msgstr ""
+
+#: admin-page.php:171
+msgid "このプラグインについて"
+msgstr ""
+
+#: admin-page.php:172
+msgid "このプラグインはサイト内のコンテンツをllms.txtとllms-full.txtファイルに出力します。LLMの学習データとして利用できます。"
+msgstr ""
+
+#: admin-page.php:173
+msgid "このプラグインは元々、rankthによって開発されたLLMs-Full.txt and LLMs.txt Generatorをベースに、いつもの匠によって機能拡張されたものです。"
+msgstr ""
+
+#: admin-page.php:174
+msgid "ソースコードは<a href=\"%s\" target=\"_blank\">GitHub</a>で公開されています。"
+msgstr ""
+
+#: admin-page.php:175
+msgid "元のプラグイン: <a href=\"%s\" target=\"_blank\">LLMs-Full.txt and LLMs.txt Generator</a>"
+msgstr ""
+
+#: admin-page.php:178
+msgid "免責事項"
+msgstr ""
+
+#: admin-page.php:179
+msgid "このプログラムによるいかなる不都合や事故も補償しません。ご使用は自己責任でお願いします。"
+msgstr ""
+
+#: admin-page.php:181
+msgid "連絡先情報"
+msgstr ""
+
+#: admin-page.php:183
+msgid "メールアドレス: <a href=\"mailto:%s\">%s</a>"
+msgstr ""
+
+#: admin-page.php:184
+msgid "ホームページ: <a href=\"%s\" target=\"_blank\">%s</a>"
+msgstr ""
+
+#: admin-page.php:185
+msgid "X (Twitter): <a href=\"%s\" target=\"_blank\">@itsumonotakumi</a>"
+msgstr ""
+
+#: admin-page.php:186
+msgid "Threads: <a href=\"%s\" target=\"_blank\">@itsumonotakumi</a>"
+msgstr ""
+
+#: admin-page.php:187
+msgid "YouTube: <a href=\"%s\" target=\"_blank\">@itsumonotakumi</a>"
+msgstr ""
+
+#: admin-page.php:192
+msgid "プラグインの使い方"
+msgstr ""
+
+#: admin-page.php:193
+msgid "このプラグインは、WordPressサイトのコンテンツをAIの学習データとして利用するためのllms.txtとllms-full.txtファイルを生成します。"
+msgstr ""
+
+#: admin-page.php:195
+msgid "設定タブで、ファイルに含める投稿タイプを選択します。"
+msgstr ""
+
+#: admin-page.php:196
+msgid "必要に応じてカスタムヘッダーテキストを追加し、抜粋を含めるかどうかを設定します。"
+msgstr ""
+
+#: admin-page.php:197
+msgid "特定のURLだけを含めたり、除外したりするためのフィルターを設定できます。"
+msgstr ""
+
+#: admin-page.php:198
+msgid "生成タブで「LLMS.txtファイルを生成」ボタンをクリックして、ファイルを生成します。"
+msgstr ""
+
+#: admin-page.php:203
+msgid "自動更新について"
+msgstr ""
+
+#: admin-page.php:204
+msgid "「投稿の変更時に自動更新」を有効にすると、投稿の追加・更新・削除時に自動的にファイルが生成されます。"
+msgstr ""
+
+#: admin-page.php:205
+msgid "「定期的に自動生成」を有効にすると、指定した頻度（毎時、1日2回、毎日、毎週）でファイルが自動的に生成されます。"
+msgstr ""
+
+#: admin-page.php:209
+msgid "URLフィルターの使い方"
+msgstr ""
+
+#: admin-page.php:210
+msgid "URLフィルターでは、*をワイルドカードとして使用できます。例："
+msgstr ""
+
+#: admin-page.php:212
+msgid "/blog/* - blogディレクトリ内のすべてのページを対象にします"
+msgstr ""
+
+#: admin-page.php:213
+msgid "*/2023/* - 2023を含むURLすべてを対象にします"
+msgstr ""
+
+#: admin-page.php:215
+msgid "「含めるURL」が空の場合、すべてのURLが対象になります。「除外するURL」が設定されている場合、それらは常に除外されます。"
+msgstr ""
+
+#: admin-page.php:217
+msgid "特定のURLを除外する例"
+msgstr ""
+
+#: admin-page.php:218
+msgid "以下のような形式で入力します："
+msgstr ""
+
+#: admin-page.php:225
+msgid "注意事項："
+msgstr ""
+
+#: admin-page.php:227
+msgid "URLの末尾のスラッシュは自動的に削除されるため、/contact/ と /contact は同じものとして扱われます"
+msgstr ""
+
+#: admin-page.php:228
+msgid "絶対URLと相対URL（/から始まるパス）の両方が使用できます"
+msgstr ""
+
+#: admin-page.php:229
+msgid "デバッグモードを有効にすると、URL処理の詳細ログが生成されます"
+msgstr ""
+
+#: llms-txt-full-txt-generator.php:185
+msgid "設定を保存するには、少なくとも1つの投稿タイプを選択する必要があります。"
+msgstr ""
+
+#: llms-txt-full-txt-generator.php:197
+msgid "LLMS TXT and Full TXT Generator 設定"
+msgstr ""
+
+#: llms-txt-full-txt-generator.php:198
+msgid "LLMS.txt生成設定"
+msgstr ""
+
+#: llms-txt-full-txt-generator.php:214
+msgid "LLMS.txtファイルが正常に生成されました。"
+msgstr ""
+
+#: llms-txt-full-txt-generator.php:226
+msgid "このページにアクセスするための十分な権限がありません。"
+msgstr ""
+
+#: llms-txt-full-txt-generator.php:230
+msgid "無効なnonceが指定されました"
+msgstr ""
+
+#: llms-txt-full-txt-generator.php:258
+msgid "投稿タイプが選択されていません。llms.txtとllms-full.txtの両方がクリアされました。"
+msgstr ""
+
+#: llms-txt-full-txt-generator.php:313
+msgid "該当する投稿がありません。"
+msgstr ""
+
+#: llms-txt-full-txt-generator.php:342
+msgid "LLMS.txtファイルが正常に生成されました。"
+msgstr ""
