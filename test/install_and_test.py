@@ -20,6 +20,8 @@ def test_plugin_installation():
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.binary_location = '/nix/store/chrome/bin/chromium'
     driver = webdriver.Chrome(options=options)
     
     try:

@@ -1,4 +1,18 @@
-modules = ["php-8.2", "python-3.11", "web"]
+
+modules = ["python-3.11", "web"]
 
 [nix]
 channel = "stable-24_05"
+
+[deployment]
+run = ["python3", "test/install_and_test.py"]
+
+[languages]
+[languages.python]
+pattern = "**/*.py"
+[languages.python.languageServer]
+start = "pylsp"
+
+[languages.php]
+pattern = "**/*.php"
+
