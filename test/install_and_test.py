@@ -18,15 +18,12 @@ def test_plugin_installation():
         raise Exception("Required environment variables are not set")
 
     # Chromeドライバーの設定
-    options = {
-        'request_storage': 'memory',
-        'verify_ssl': False
-    }
-    driver = webdriver.Remote(
-        command_executor='http://selenium:4444/wd/hub',
-        options=webdriver.ChromeOptions(),
-        seleniumwire_options=options
-    )
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    
+    driver = webdriver.Chrome(options=chrome_options)
     
     try:
         # WordPressにログイン
