@@ -473,8 +473,8 @@ class LLMS_TXT_Generator {
             $llms_full_txt_content .= "\n";
         }
 
-        file_put_contents($llms_txt_path, sanitize_textarea_field($llms_txt_content));
-        file_put_contents($llms_full_txt_path, sanitize_textarea_field($llms_full_txt_content));
+        file_put_contents($llms_txt_path, "\xEF\xBB\xBF" . sanitize_textarea_field($llms_txt_content));
+        file_put_contents($llms_full_txt_path, "\xEF\xBB\xBF" . sanitize_textarea_field($llms_full_txt_content));
         if ($show_notification) {
             add_settings_error('llms_txt_generator', 'files_generated', __('LLMS.txtファイルが正常に生成されました。', 'llms-txt-full-txt-generator'), 'updated');
         }
