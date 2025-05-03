@@ -1,11 +1,7 @@
 
 import os
 import time
-from seleniumwire import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import requests
+from playwright.sync_api import sync_playwright
 
 def test_plugin_installation():
     # 環境変数を取得
@@ -17,82 +13,78 @@ def test_plugin_installation():
     if not all([wp_site, wp_login, wp_user, wp_password]):
         raise Exception("Required environment variables are not set")
 
-    # Chromeドライバーの設定
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    
-    driver = webdriver.Chrome(options=chrome_options)
-    
-    try:
-        # WordPressにログイン
-        print("Logging into WordPress...")
-        driver.get(wp_login)
+    with sync_playwright() as p:
+        # ブラウザを起動
+        browser = p.chromium.launch(headless=True)
+        context = browser.new_context()
+        page = context.new_page()
         
-        username = driver.find_element(By.ID, "user_login")
-        password = driver.find_element(By.ID, "user_pass")
-        
-        username.send_keys(wp_user)
-        password.send_keys(wp_password)
-        
-        driver.find_element(By.ID, "wp-submit").click()
-        
-        # プラグインをアップロード
-        print("Uploading plugin...")
-        driver.get(f"{wp_site}/wp-admin/plugin-install.php?tab=upload")
-        
-        file_input = driver.find_element(By.ID, "pluginzip")
-        file_input.send_keys(os.path.abspath("../llms-txt-full-txt-generator.zip"))
-        
-        driver.find_element(By.ID, "install-plugin-submit").click()
-        
-        # プラグインを有効化
-        print("Activating plugin...")
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//a[contains(@class, 'activate-now')]"))
-        ).click()
-        
-        # 設定ページに移動
-        print("Configuring plugin...")
-        driver.get(f"{wp_site}/wp-admin/options-general.php?page=llms-txt-generator")
-        
-        # 投稿タイプを選択
-        post_checkbox = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//input[@type='checkbox'][@value='post']"))
-        )
-        if not post_checkbox.is_selected():
-            post_checkbox.click()
+        try:
+            # WordPressにログイン
+            print("Logging into WordPress...")
+            page.goto(wp_login)
             
-        # 設定を保存
-        driver.find_element(By.NAME, "submit").click()
-        
-        # ファイル生成
-        print("Generating files...")
-        driver.find_element(By.NAME, "generate_llms_txt").click()
-        
-        # ファイルの存在確認
-        time.sleep(2)
-        driver.get(f"{wp_site}/llms.txt")
-        llms_txt_content = driver.page_source
-        
-        driver.get(f"{wp_site}/llms-full.txt")
-        llms_full_txt_content = driver.page_source
-        
-        # 文字化けチェック
-        if "�" in llms_txt_content or "�" in llms_full_txt_content:
-            print("Warning: Character encoding issues detected")
-        else:
-            print("Character encoding looks good")
+            page.fill("#user_login", wp_user)
+            page.fill("#user_pass", wp_password)
+            page.click("#wp-submit")
             
-        print("Test completed successfully!")
-        
-    except Exception as e:
-        print(f"Error during testing: {str(e)}")
-        raise
-        
-    finally:
-        driver.quit()
+            # プラグインをアップロード
+            print("Uploading plugin...")
+            page.goto(f"{wp_site}/wp-admin/plugin-install.php?tab=upload")
+            
+            with page.expect_file_chooser() as fc_info:
+                page.click("#pluginzip")
+            file_chooser = fc_info.value
+            file_chooser.set_files(os.path.abspath("../llms-txt-full-txt-generator.zip"))
+            
+            page.click("#install-plugin-submit")
+            
+            # プラグインを有効化
+            print("Activating plugin...")
+            page.wait_for_selector("//a[contains(@class, 'activate-now')]")
+            page.click("//a[contains(@class, 'activate-now')]")
+            
+            # 設定ページに移動
+            print("Configuring plugin...")
+            page.goto(f"{wp_site}/wp-admin/options-general.php?page=llms-txt-generator")
+            
+            # 投稿タイプを選択
+            post_checkbox = page.wait_for_selector("//input[@type='checkbox'][@value='post']")
+            if not post_checkbox.is_checked():
+                post_checkbox.click()
+                
+            # 設定を保存
+            page.click("input[name='submit']")
+            
+            # ファイル生成
+            print("Generating files...")
+            page.click("input[name='generate_llms_txt']")
+            
+            # ファイルの存在確認
+            time.sleep(2)
+            
+            # llms.txtの確認
+            page.goto(f"{wp_site}/llms.txt")
+            llms_txt_content = page.content()
+            
+            # llms-full.txtの確認
+            page.goto(f"{wp_site}/llms-full.txt")
+            llms_full_txt_content = page.content()
+            
+            # 文字化けチェック
+            if "�" in llms_txt_content or "�" in llms_full_txt_content:
+                print("Warning: Character encoding issues detected")
+            else:
+                print("Character encoding looks good")
+                
+            print("Test completed successfully!")
+            
+        except Exception as e:
+            print(f"Error during testing: {str(e)}")
+            raise
+            
+        finally:
+            browser.close()
 
 if __name__ == "__main__":
     test_plugin_installation()
