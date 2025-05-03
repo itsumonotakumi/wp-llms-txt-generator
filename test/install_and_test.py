@@ -1,10 +1,11 @@
 
 import os
 import time
-from selenium import webdriver
+from seleniumwire import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import requests
 
 def test_plugin_installation():
     # 環境変数を取得
@@ -17,12 +18,15 @@ def test_plugin_installation():
         raise Exception("Required environment variables are not set")
 
     # Chromeドライバーの設定
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    options.binary_location = '/nix/store/chrome/bin/chromium'
-    driver = webdriver.Chrome(options=options)
+    options = {
+        'request_storage': 'memory',
+        'verify_ssl': False
+    }
+    driver = webdriver.Remote(
+        command_executor='http://selenium:4444/wd/hub',
+        options=webdriver.ChromeOptions(),
+        seleniumwire_options=options
+    )
     
     try:
         # WordPressにログイン
