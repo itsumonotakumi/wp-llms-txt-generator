@@ -2,6 +2,13 @@
 
 This plugin is a fork of [LLMs-Full.txt and LLMs.txt Generator](https://wordpress.org/plugins/llms-full-txt-generator/).
 
+## [1.9.3] - 2025-05-07
+
+### Bug Fixes
+- Implemented UTF-8 encoding to fix Japanese text garbling issues
+- Added UTF-8 BOM to files to explicitly indicate character encoding
+- Added mbstring extension dependency check
+
 ## [1.9.2] - 2025-03-22
 
 ### New Features

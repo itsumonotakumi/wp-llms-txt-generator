@@ -3,7 +3,7 @@
 Plugin Name: LLMS TXT and Full TXT Generator
 Plugin URI: https://github.com/itsumonotakumi/llms-txt-full-txt-generator
 Description: サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。LLMの学習データとして利用できます。 | Outputs your site's content to llms.txt and llms-full.txt files for use as LLM training data.
-Version: 1.9.2
+Version: 1.9.3
 Author: いつもの匠
 Author URI: https://mobile-cheap.jp
 License: GPL v2 or later
@@ -22,7 +22,7 @@ YouTube: https://www.youtube.com/@itsumonotakumi
  *
  * サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。
  *
- * @version 1.9.2
+ * @version 1.9.3
  * @author いつもの匠
  * @author rankth (Original Author)
  * @link https://mobile-cheap.jp
@@ -34,7 +34,7 @@ if (!defined('ABSPATH')) {
 }
 
 // プラグインの定数定義
-define('LLMS_TXT_GENERATOR_VERSION', '1.9.2');
+define('LLMS_TXT_GENERATOR_VERSION', '1.9.3');
 define('LLMS_TXT_GENERATOR_PATH', plugin_dir_path(__FILE__));
 define('LLMS_TXT_GENERATOR_URL', plugin_dir_url(__FILE__));
 
@@ -43,7 +43,7 @@ define('LLMS_TXT_GENERATOR_URL', plugin_dir_url(__FILE__));
  *
  * サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。
  *
- * @version 1.9.2
+ * @version 1.9.3
  * @author rankth (Original Author)
  * @author いつもの匠 (Customized Version)
  * @link https://github.com/itsumonotakumi/llms-txt-full-txt-generator
@@ -68,6 +68,10 @@ class LLMS_TXT_Generator {
      * コンストラクタ
      */
     private function __construct() {
+        if (!extension_loaded('mbstring')) {
+            add_action('admin_notices', array($this, 'mbstring_missing_notice'));
+        }
+        
         // 国際化対応
         add_action('plugins_loaded', array($this, 'load_textdomain'));
 
@@ -400,8 +404,8 @@ class LLMS_TXT_Generator {
         }
 
         if (empty($selected_post_types)) {
-            file_put_contents($llms_txt_path, '');
-            file_put_contents($llms_full_txt_path, '');
+            file_put_contents($llms_txt_path, mb_convert_encoding('', 'UTF-8'));
+            file_put_contents($llms_full_txt_path, mb_convert_encoding('', 'UTF-8'));
             if ($show_notification) {
                 add_settings_error('llms_txt_generator', 'no_post_types', __('投稿タイプが選択されていません。llms.txtとllms-full.txtの両方がクリアされました。', 'llms-txt-full-txt-generator'), 'updated');
             }
@@ -417,6 +421,8 @@ class LLMS_TXT_Generator {
         if (file_exists($llms_full_txt_path)) {
             wp_delete_file($llms_full_txt_path);
         }
+        
+        $utf8_bom = chr(239) . chr(187) . chr(191);
 
         $site_name = get_bloginfo('name');
         $site_description = get_bloginfo('description');
@@ -473,8 +479,8 @@ class LLMS_TXT_Generator {
             $llms_full_txt_content .= "\n";
         }
 
-        file_put_contents($llms_txt_path, sanitize_textarea_field($llms_txt_content));
-        file_put_contents($llms_full_txt_path, sanitize_textarea_field($llms_full_txt_content));
+        file_put_contents($llms_txt_path, $utf8_bom . mb_convert_encoding(sanitize_textarea_field($llms_txt_content), 'UTF-8'));
+        file_put_contents($llms_full_txt_path, $utf8_bom . mb_convert_encoding(sanitize_textarea_field($llms_full_txt_content), 'UTF-8'));
         if ($show_notification) {
             add_settings_error('llms_txt_generator', 'files_generated', __('LLMS.txtファイルが正常に生成されました。', 'llms-txt-full-txt-generator'), 'updated');
         }
@@ -649,7 +655,7 @@ class LLMS_TXT_Generator {
 
         $log_file = $log_dir . '/url_debug.log';
         $timestamp = current_time('mysql');
-        file_put_contents($log_file, "[{$timestamp}] {$message}\n", FILE_APPEND);
+        file_put_contents($log_file, mb_convert_encoding("[{$timestamp}] {$message}\n", 'UTF-8'), FILE_APPEND);
     }
 
     /**
@@ -779,6 +785,13 @@ class LLMS_TXT_Generator {
         // 設定ページにリダイレクト
         wp_safe_redirect(add_query_arg('page', 'llms-txt-generator', admin_url('options-general.php')) . '#help-tab');
         exit;
+    }
+
+    /**
+     * MBString拡張モジュールが見つからない場合の管理通知
+     */
+    public function mbstring_missing_notice() {
+        echo '<div class="error"><p>' . __('LLMS TXT and Full TXT Generator requires the PHP mbstring extension to properly handle UTF-8 encoding. Please ask your hosting provider to enable this extension.', 'llms-txt-full-txt-generator') . '</p></div>';
     }
 }
 

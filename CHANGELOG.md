@@ -2,6 +2,13 @@
 
 このプラグインは[LLMs-Full.txt and LLMs.txt Generator](https://wordpress.org/plugins/llms-full-txt-generator/)をフォークして開発されています。
 
+## [1.9.3] - 2025-05-07
+
+### バグ修正
+- 日本語テキストの文字化けを修正するためにUTF-8エンコーディングを実装
+- ファイル書き込み時にUTF-8 BOMを追加して文字コードを明示
+- mbstring拡張モジュールの依存関係チェックを追加
+
 ## [1.9.2] - 2025-03-22
 
 ### 機能追加
