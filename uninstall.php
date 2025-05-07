@@ -37,7 +37,9 @@ if ($delete_all_options) {
 } else {
 	// バージョン情報だけ残して他は消さない
 	// バージョン情報があると次回のインストール時に設定を引き継ぐことができる
-	error_log('LLMS TXT Generator: アンインストール時に設定を保持しました。');
+	if (get_option('llms_txt_generator_debug_mode', false)) {
+		error_log('LLMS TXT Generator: アンインストール時に設定を保持しました。');
+	}
 }
 
 // スケジュールイベントの削除（設定保持に関わらず実行）
