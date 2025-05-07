@@ -215,15 +215,25 @@ class LLMS_TXT_Generator {
      * llms.txtファイルへのリクエストを処理
      */
     public function handle_txt_file_requests() {
-        $request_uri = $_SERVER['REQUEST_URI'];
+        $request_uri = esc_url_raw(wp_unslash($_SERVER['REQUEST_URI']));
+        $request_uri = parse_url($request_uri, PHP_URL_PATH);
 
         if ($request_uri === '/llms.txt' || $request_uri === '/llms-full.txt') {
             $filename = ABSPATH . substr($request_uri, 1);
 
             if (file_exists($filename)) {
+                global $wp_filesystem;
+                if (empty($wp_filesystem)) {
+                    require_once(ABSPATH . '/wp-admin/includes/file.php');
+                    WP_Filesystem();
+                }
+                
                 header('Content-Type: text/plain; charset=UTF-8');
-                header('Content-Disposition: inline; filename="' . basename($filename) . '"');
-                readfile($filename);
+                header('Content-Disposition: inline; filename="' . sanitize_file_name(basename($filename)) . '"');
+                
+                if ($wp_filesystem->exists($filename)) {
+                    echo wp_kses_post($wp_filesystem->get_contents($filename));
+                }
                 exit;
             }
         }
@@ -400,8 +410,16 @@ class LLMS_TXT_Generator {
         }
 
         if (empty($selected_post_types)) {
-            file_put_contents($llms_txt_path, '');
-            file_put_contents($llms_full_txt_path, '');
+            // WP_Filesystemを使用してファイルを安全に書き込む
+            global $wp_filesystem;
+            if (empty($wp_filesystem)) {
+                require_once(ABSPATH . '/wp-admin/includes/file.php');
+                WP_Filesystem();
+            }
+            
+            $wp_filesystem->put_contents($llms_txt_path, '', FS_CHMOD_FILE);
+            $wp_filesystem->put_contents($llms_full_txt_path, '', FS_CHMOD_FILE);
+            
             if ($show_notification) {
                 add_settings_error('llms_txt_generator', 'no_post_types', __('投稿タイプが選択されていません。llms.txtとllms-full.txtの両方がクリアされました。', 'llms-txt-full-txt-generator'), 'updated');
             }
@@ -475,8 +493,19 @@ class LLMS_TXT_Generator {
             $llms_full_txt_content .= "\n";
         }
 
-        file_put_contents($llms_txt_path, $utf8_bom . mb_convert_encoding($llms_txt_content, 'UTF-8'));
-        file_put_contents($llms_full_txt_path, $utf8_bom . mb_convert_encoding($llms_full_txt_content, 'UTF-8'));
+        // WP_Filesystemを使用してファイルを安全に書き込む
+        global $wp_filesystem;
+        if (empty($wp_filesystem)) {
+            require_once(ABSPATH . '/wp-admin/includes/file.php');
+            WP_Filesystem();
+        }
+        
+        $llms_txt_content_encoded = $utf8_bom . mb_convert_encoding($llms_txt_content, 'UTF-8');
+        $llms_full_txt_content_encoded = $utf8_bom . mb_convert_encoding($llms_full_txt_content, 'UTF-8');
+        
+        $wp_filesystem->put_contents($llms_txt_path, $llms_txt_content_encoded, FS_CHMOD_FILE);
+        $wp_filesystem->put_contents($llms_full_txt_path, $llms_full_txt_content_encoded, FS_CHMOD_FILE);
+        
         if ($show_notification) {
             add_settings_error('llms_txt_generator', 'files_generated', __('LLMS.txtファイルが正常に生成されました。', 'llms-txt-full-txt-generator'), 'updated');
         }
@@ -644,14 +673,29 @@ class LLMS_TXT_Generator {
      * @param string $message ログメッセージ
      */
     private function log_debug($message) {
+        // デバッグモードが有効な場合のみログを記録
+        if (!get_option('llms_txt_generator_debug_mode', false)) {
+            return;
+        }
+        
         $log_dir = LLMS_TXT_GENERATOR_PATH . 'logs';
         if (!file_exists($log_dir)) {
             wp_mkdir_p($log_dir);
         }
 
+        global $wp_filesystem;
+        if (empty($wp_filesystem)) {
+            require_once(ABSPATH . '/wp-admin/includes/file.php');
+            WP_Filesystem();
+        }
+        
         $log_file = $log_dir . '/url_debug.log';
         $timestamp = current_time('mysql');
-        file_put_contents($log_file, mb_convert_encoding("[{$timestamp}] {$message}\n", 'UTF-8'), FILE_APPEND);
+        $log_content = mb_convert_encoding("[{$timestamp}] {$message}\n", 'UTF-8');
+        
+        if ($wp_filesystem->exists($log_dir) || $wp_filesystem->mkdir($log_dir, FS_CHMOD_DIR)) {
+            $wp_filesystem->put_contents($log_file, $log_content, FS_CHMOD_FILE | FILE_APPEND);
+        }
     }
 
     /**
