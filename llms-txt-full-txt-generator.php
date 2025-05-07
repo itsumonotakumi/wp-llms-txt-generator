@@ -221,7 +221,7 @@ class LLMS_TXT_Generator {
             $filename = ABSPATH . substr($request_uri, 1);
 
             if (file_exists($filename)) {
-                header('Content-Type: text/plain');
+                header('Content-Type: text/plain; charset=UTF-8');
                 header('Content-Disposition: inline; filename="' . basename($filename) . '"');
                 readfile($filename);
                 exit;
@@ -425,8 +425,8 @@ class LLMS_TXT_Generator {
 
         $custom_header = get_option('llms_txt_generator_custom_header', '');
         if (!empty($custom_header)) {
-            $llms_txt_content .= sanitize_textarea_field($custom_header) . "\n\n";
-            $llms_full_txt_content .= sanitize_textarea_field($custom_header) . "\n\n";
+            $llms_txt_content .= $custom_header . "\n\n";
+            $llms_full_txt_content .= $custom_header . "\n\n";
         }
 
         $include_excerpt = get_option('llms_txt_generator_include_excerpt', false);
@@ -473,8 +473,8 @@ class LLMS_TXT_Generator {
             $llms_full_txt_content .= "\n";
         }
 
-        file_put_contents($llms_txt_path, sanitize_textarea_field($llms_txt_content));
-        file_put_contents($llms_full_txt_path, sanitize_textarea_field($llms_full_txt_content));
+        file_put_contents($llms_txt_path, $utf8_bom . mb_convert_encoding($llms_txt_content, 'UTF-8'));
+        file_put_contents($llms_full_txt_path, $utf8_bom . mb_convert_encoding($llms_full_txt_content, 'UTF-8'));
         if ($show_notification) {
             add_settings_error('llms_txt_generator', 'files_generated', __('LLMS.txtファイルが正常に生成されました。', 'llms-txt-full-txt-generator'), 'updated');
         }
