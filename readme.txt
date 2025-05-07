@@ -2,8 +2,8 @@
 Contributors: itsumonotakumi, rankth
 Tags: llm, ai, txt, content export, large language model
 Requires at least: 5.0
-Tested up to: 6.4
-Stable tag: 1.9.2
+Tested up to: 6.8
+Stable tag: 1.9.3
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -82,6 +82,11 @@ llms.txtはURLと投稿タイトルのリストのみを含み、llms-full.txt�
 
 == Changelog ==
 
+= 1.9.3 =
+* 日本語テキストの文字化けを修正するためにUTF-8エンコーディングを実装
+* ファイル書き込み時にUTF-8 BOMを追加して文字コードを明示
+* mbstring拡張モジュールの依存関係チェックを追加
+
 = 1.9.2 =
 * 多言語対応を追加（日本語・英語）
 * readme.txtの改善とスクリーンショットの追加
@@ -106,6 +111,9 @@ llms.txtはURLと投稿タイトルのリストのみを含み、llms-full.txt�
 * オリジナルバージョン by rankth
 
 == Upgrade Notice ==
+
+= 1.9.3 =
+この更新では日本語テキストの文字化け問題が修正され、UTF-8エンコーディングが正しく実装されています。
 
 = 1.9.2 =
 この更新では多言語対応（日本語・英語）が追加され、UIの改善が行われています。
