@@ -114,7 +114,9 @@ class LLMS_TXT_Generator {
         // バージョン情報を更新
         update_option('llms_txt_generator_version', LLMS_TXT_GENERATOR_VERSION);
 
-        error_log('LLMS TXT Generator: プラグインが有効化されました。バージョン: ' . LLMS_TXT_GENERATOR_VERSION);
+        if (get_option('llms_txt_generator_debug_mode', false)) {
+            error_log('LLMS TXT Generator: プラグインが有効化されました。バージョン: ' . LLMS_TXT_GENERATOR_VERSION);
+        }
     }
 
     /**
@@ -215,7 +217,7 @@ class LLMS_TXT_Generator {
      * llms.txtファイルへのリクエストを処理
      */
     public function handle_txt_file_requests() {
-        $request_uri = esc_url_raw(wp_unslash($_SERVER['REQUEST_URI']));
+        $request_uri = isset($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : '';
         $request_uri = parse_url($request_uri, PHP_URL_PATH);
 
         if ($request_uri === '/llms.txt' || $request_uri === '/llms-full.txt') {
@@ -367,8 +369,8 @@ class LLMS_TXT_Generator {
      * 管理画面の表示
      */
     public function admin_page() {
-        if (isset($_GET['llms_generated']) && $_GET['llms_generated'] === 'true') {
-            add_settings_error('llms_txt_generator', 'files_generated', __('LLMS.txtファイルが正常に生成されました。', 'llms-txt-full-txt-generator'), 'updated');
+        if (isset($_GET['llms_generated']) && sanitize_text_field(wp_unslash($_GET['llms_generated'])) === 'true') {
+            add_settings_error('llms_txt_generator', 'files_generated', esc_html__('LLMS.txtファイルが正常に生成されました。', 'llms-txt-full-txt-generator'), 'updated');
         }
         settings_errors('llms_txt_generator');
         include plugin_dir_path(__FILE__) . 'admin-page.php';
