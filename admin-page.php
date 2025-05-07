@@ -143,8 +143,11 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                 $llms_txt_url = home_url('/llms.txt');
                 $modified = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), filemtime($llms_txt_path));
                 echo '<div class="file-info">';
+                /* translators: %s: URL to the llms.txt file */
                 echo '<p>' . sprintf(esc_html__('LLMS.txtファイル: %s', 'llms-txt-full-txt-generator'), '<a href="' . esc_url($llms_txt_url) . '" target="_blank">' . esc_html($llms_txt_url) . '</a>') . '</p>';
+                /* translators: %s: Last modified date and time of the file */
                 echo '<p>' . sprintf(esc_html__('最終更新日時: %s', 'llms-txt-full-txt-generator'), esc_html($modified)) . '</p>';
+                /* translators: %s: File size in human readable format */
                 echo '<p>' . sprintf(esc_html__('ファイルサイズ: %s', 'llms-txt-full-txt-generator'), esc_html(size_format(filesize($llms_txt_path)))) . '</p>';
                 echo '</div>';
             } else {
@@ -155,8 +158,11 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                 $llms_full_txt_url = home_url('/llms-full.txt');
                 $modified = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), filemtime($llms_full_txt_path));
                 echo '<div class="file-info">';
+                /* translators: %s: URL to the llms-full.txt file */
                 echo '<p>' . sprintf(esc_html__('LLMS-Full.txtファイル: %s', 'llms-txt-full-txt-generator'), '<a href="' . esc_url($llms_full_txt_url) . '" target="_blank">' . esc_html($llms_full_txt_url) . '</a>') . '</p>';
+                /* translators: %s: Last modified date and time of the file */
                 echo '<p>' . sprintf(esc_html__('最終更新日時: %s', 'llms-txt-full-txt-generator'), esc_html($modified)) . '</p>';
+                /* translators: %s: File size in human readable format */
                 echo '<p>' . sprintf(esc_html__('ファイルサイズ: %s', 'llms-txt-full-txt-generator'), esc_html(size_format(filesize($llms_full_txt_path)))) . '</p>';
                 echo '</div>';
             } else {
@@ -173,19 +179,30 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
             <h3><?php esc_html_e('このプラグインについて', 'llms-txt-full-txt-generator'); ?></h3>
             <p><?php esc_html_e('このプラグインはサイト内のコンテンツをllms.txtとllms-full.txtファイルに出力します。LLMの学習データとして利用できます。', 'llms-txt-full-txt-generator'); ?></p>
             <p><?php esc_html_e('このプラグインは元々、rankthによって開発されたLLMs-Full.txt and LLMs.txt Generatorをベースに、いつもの匠によって機能拡張されたものです。', 'llms-txt-full-txt-generator'); ?></p>
-            <p><?php echo sprintf(__('ソースコードは<a href="%s" target="_blank">GitHub</a>で公開されています。', 'llms-txt-full-txt-generator'), 'https://github.com/itsumonotakumi/llms-txt-full-txt-generator'); ?></p>
-            <p><?php echo sprintf(__('元のプラグイン: <a href="%s" target="_blank">LLMs-Full.txt and LLMs.txt Generator</a>', 'llms-txt-full-txt-generator'), 'https://wordpress.org/plugins/llms-full-txt-generator/'); ?></p>
+            <?php
+            /* translators: %s: URL to the GitHub repository */
+            echo '<p>' . sprintf(__('ソースコードは<a href="%s" target="_blank">GitHub</a>で公開されています。', 'llms-txt-full-txt-generator'), 'https://github.com/itsumonotakumi/llms-txt-full-txt-generator') . '</p>';
+            /* translators: %s: URL to the original plugin on WordPress.org */
+            echo '<p>' . sprintf(__('元のプラグイン: <a href="%s" target="_blank">LLMs-Full.txt and LLMs.txt Generator</a>', 'llms-txt-full-txt-generator'), 'https://wordpress.org/plugins/llms-full-txt-generator/') . '</p>';
+            ?>
 
             <h4><?php esc_html_e('免責事項', 'llms-txt-full-txt-generator'); ?></h4>
             <p class="notice notice-warning" style="padding: 10px; margin: 10px 0;"><?php esc_html_e('このプログラムによるいかなる不都合や事故も補償しません。ご使用は自己責任でお願いします。', 'llms-txt-full-txt-generator'); ?></p>
 
             <h4><?php esc_html_e('連絡先情報', 'llms-txt-full-txt-generator'); ?></h4>
             <ul>
-                <li><?php echo sprintf(__('メールアドレス: <a href="mailto:%s">%s</a>', 'llms-txt-full-txt-generator'), 'llms-txt@takulog.info', 'llms-txt@takulog.info'); ?></li>
-                <li><?php echo sprintf(__('ホームページ: <a href="%s" target="_blank">%s</a>', 'llms-txt-full-txt-generator'), 'https://mobile-cheap.jp', 'https://mobile-cheap.jp'); ?></li>
-                <li><?php echo sprintf(__('X (Twitter): <a href="%s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), 'https://x.com/itsumonotakumi'); ?></li>
-                <li><?php echo sprintf(__('Threads: <a href="%s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), 'https://www.threads.net/@itsumonotakumi'); ?></li>
-                <li><?php echo sprintf(__('YouTube: <a href="%s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), 'https://www.youtube.com/@itsumonotakumi'); ?></li>
+                <?php
+                /* translators: %s: Email address used twice - once for mailto: link and once for display */
+                echo '<li>' . sprintf(__('メールアドレス: <a href="mailto:%s">%s</a>', 'llms-txt-full-txt-generator'), 'llms-txt@takulog.info', 'llms-txt@takulog.info') . '</li>';
+                /* translators: %s: Homepage URL used twice - once for href and once for display */
+                echo '<li>' . sprintf(__('ホームページ: <a href="%s" target="_blank">%s</a>', 'llms-txt-full-txt-generator'), 'https://mobile-cheap.jp', 'https://mobile-cheap.jp') . '</li>';
+                /* translators: %s: X (Twitter) profile URL */
+                echo '<li>' . sprintf(__('X (Twitter): <a href="%s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), 'https://x.com/itsumonotakumi') . '</li>';
+                /* translators: %s: Threads profile URL */
+                echo '<li>' . sprintf(__('Threads: <a href="%s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), 'https://www.threads.net/@itsumonotakumi') . '</li>';
+                /* translators: %s: YouTube channel URL */
+                echo '<li>' . sprintf(__('YouTube: <a href="%s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), 'https://www.youtube.com/@itsumonotakumi') . '</li>';
+                ?>
             </ul>
         </div>
 
