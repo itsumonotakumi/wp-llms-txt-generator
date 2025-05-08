@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         <a href="#help-tab" class="nav-tab"><?php esc_html_e('ヘルプ', 'llms-txt-full-txt-generator'); ?></a>
     </div>
 
-    <div id="settings-tab" class="tab-content">
+    <div id="settings-tab" class="tab-content" style="display:block;">
         <form method="post" action="options.php">
             <?php
             settings_fields('llms_txt_generator_settings');
@@ -122,7 +122,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         </form>
     </div>
 
-    <div id="generate-tab" class="tab-content">
+    <div id="generate-tab" class="tab-content" style="display:none;">
         <h2><?php esc_html_e('LLMS.txtファイルを生成', 'llms-txt-full-txt-generator'); ?></h2>
         <p><?php esc_html_e('下のボタンをクリックすると、現在の設定に基づいてllms.txtとllms-full.txtファイルを生成します。', 'llms-txt-full-txt-generator'); ?></p>
 
@@ -172,7 +172,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         </div>
     </div>
 
-    <div id="help-tab" class="tab-content">
+    <div id="help-tab" class="tab-content" style="display:none;">
         <h2><?php esc_html_e('ヘルプとサポート', 'llms-txt-full-txt-generator'); ?></h2>
 
         <div class="card">
@@ -288,16 +288,19 @@ https://example.com/page2
     padding: 10px;
     margin-bottom: 15px;
 }
+
+.tab-content {
+    display: none;
+    margin-top: 20px;
+}
+
+#settings-tab {
+    display: block;
+}
 </style>
 
 <script>
 jQuery(document).ready(function($) {
-    // 初期化時にすべてのタブコンテンツを非表示にする
-    $('.tab-content').hide();
-    
-    // 最初のタブを表示（デフォルトは設定タブ）
-    $('#settings-tab').show();
-    
     // タブの切り替え
     $('.nav-tab').on('click', function(e) {
         e.preventDefault();
@@ -312,14 +315,14 @@ jQuery(document).ready(function($) {
         $(targetTab).show();
         
         // URLハッシュを更新（履歴に追加せず）
-        if (history.pushState) {
-            history.pushState(null, null, targetTab);
+        if (history.replaceState) {
+            history.replaceState(null, null, targetTab);
         }
     });
 
     // URLハッシュによるタブ切り替え
     if (window.location.hash) {
-        const hash = window.location.hash;
+        var hash = window.location.hash;
         if ($(hash).length) {
             $('.nav-tab').removeClass('nav-tab-active');
             $('a[href="' + hash + '"]').addClass('nav-tab-active');
