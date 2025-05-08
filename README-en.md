@@ -2,7 +2,7 @@
 
 ![WordPress Version](https://img.shields.io/badge/WordPress-5.0%2B-blue)
 ![PHP Version](https://img.shields.io/badge/PHP-7.0%2B-purple)
-![License](https://img.shields.io/badge/License-GPL%20v2%2B-green)
+![License](https://img.shields.io/badge/License-GPL%20v2-green)
 ![Version](https://img.shields.io/badge/Version-1.9.2-orange)
 
 A WordPress plugin that automatically exports posts and pages to llms.txt and llms-full.txt files, which can be used as training data for LLMs (Large Language Models).
@@ -107,7 +107,7 @@ For detailed change history, see [CHANGELOG.md](CHANGELOG-en.md).
 
 ## License
 
-GPL v2 or later (inheriting the same license as the original plugin)
+GPL v2 (based on the original plugin "LLMs-Full.txt and LLMs.txt Generator v1.9")
 
 ## Developer Information
 
