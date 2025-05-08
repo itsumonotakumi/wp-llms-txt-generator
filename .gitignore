@@ -1,4 +1,5 @@
-# WordPress関連
+
+# WordPress related
 wp-config.php
 wp-content/uploads/
 wp-content/upgrade/
@@ -6,17 +7,17 @@ wp-content/backup-db/
 wp-content/cache/
 wp-content/backups/
 
-# プラグイン固有のファイル
+# Plugin specific files
 logs/
 logs/url_debug.log
 
-# 開発環境
+# Development environment
 node_modules/
 vendor/
 composer.lock
 package-lock.json
 
-# OS生成ファイル
+# OS generated files
 .DS_Store
 .DS_Store?
 ._*
@@ -25,7 +26,7 @@ package-lock.json
 ehthumbs.db
 Thumbs.db
 
-# エディタ設定
+# Editor/IDE files
 .vscode/
 .idea/
 .cursor/
@@ -33,23 +34,28 @@ Thumbs.db
 *.swo
 *.sublime-workspace
 *.sublime-project
+.replit
+.cache/
+.upm/
+.config/
+.npm/
 
-# PHPStorm
-.phpstorm.meta.php
-.phpstorm.meta.php/*
-
-# テスト関連
+# Test and coverage
 phpunit.xml
 .phpunit.result.cache
 tests/coverage/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
 
-# Zip/圧縮ファイル
+# Archives
 *.zip
 *.tar
 *.tar.gz
 *.rar
 
-# 一時ファイル
+# Temporary files
 *.tmp
 *.bak
 *.log
@@ -57,7 +63,14 @@ tests/coverage/
 *.css.map
 *.js.map
 
-# 証明書と秘密キー
+# Security related
 *.pem
 *.key
 *.crt
+.env
+.env.*
+
+# Replit specific
+.breakpoints
+.replit
+replit.nix
