@@ -141,7 +141,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
             if (file_exists($llms_txt_path)) {
                 $llms_txt_url = home_url('/llms.txt');
-                $modified = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), filemtime($llms_txt_path));
+                $modified = gmdate_i18n(get_option('date_format') . ' ' . get_option('time_format'), filemtime($llms_txt_path));
                 echo '<div class="file-info">';
                 /* translators: %s: URL to the llms.txt file */
                 echo '<p>' . sprintf(esc_html__('LLMS.txtファイル: %s', 'llms-txt-full-txt-generator'), '<a href="' . esc_url($llms_txt_url) . '" target="_blank">' . esc_html($llms_txt_url) . '</a>') . '</p>';
@@ -156,7 +156,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
             if (file_exists($llms_full_txt_path)) {
                 $llms_full_txt_url = home_url('/llms-full.txt');
-                $modified = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), filemtime($llms_full_txt_path));
+                $modified = gmdate_i18n(get_option('date_format') . ' ' . get_option('time_format'), filemtime($llms_full_txt_path));
                 echo '<div class="file-info">';
                 /* translators: %s: URL to the llms-full.txt file */
                 echo '<p>' . sprintf(esc_html__('LLMS-Full.txtファイル: %s', 'llms-txt-full-txt-generator'), '<a href="' . esc_url($llms_full_txt_url) . '" target="_blank">' . esc_html($llms_full_txt_url) . '</a>') . '</p>';
@@ -249,23 +249,25 @@ https://example.com/page2
             </ul>
         </div>
 
-        <h3><?php esc_html_e('高度な設定', 'llms-txt-full-txt-generator'); ?></h3>
-        <div class="notice notice-warning" style="padding: 10px; margin: 10px 0;">
-            <p><strong><?php esc_html_e('アンインストール時の設定保持', 'llms-txt-full-txt-generator'); ?></strong></p>
-            <p><?php esc_html_e('デフォルトでは、プラグインをアンインストール（削除）しても設定は保持されます。これにより、再インストール時に以前の設定が自動的に復元されます。', 'llms-txt-full-txt-generator'); ?></p>
-            <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
-                <?php wp_nonce_field('llms_settings_action', 'llms_settings_nonce'); ?>
-                <input type="hidden" name="action" value="llms_toggle_delete_settings">
-                <?php
-                $delete_all_data = get_option('llms_txt_generator_delete_all_data', false);
-                ?>
-                <label>
-                    <input type="checkbox" name="llms_delete_all_data" value="1" <?php checked($delete_all_data, true); ?>>
-                    <?php esc_html_e('アンインストール時にすべての設定を削除する', 'llms-txt-full-txt-generator'); ?>
-                </label>
-                <p class="description"><?php esc_html_e('このオプションを有効にすると、プラグインをアンインストールする際にすべての設定が完全に削除されます。', 'llms-txt-full-txt-generator'); ?></p>
-                <p><input type="submit" class="button" value="<?php esc_attr_e('設定を保存', 'llms-txt-full-txt-generator'); ?>"></p>
-            </form>
+        <div class="card">
+            <h3><?php esc_html_e('高度な設定', 'llms-txt-full-txt-generator'); ?></h3>
+            <div class="notice notice-warning" style="padding: 10px; margin: 10px 0;">
+                <p><strong><?php esc_html_e('アンインストール時の設定保持', 'llms-txt-full-txt-generator'); ?></strong></p>
+                <p><?php esc_html_e('デフォルトでは、プラグインをアンインストール（削除）しても設定は保持されます。これにより、再インストール時に以前の設定が自動的に復元されます。', 'llms-txt-full-txt-generator'); ?></p>
+                <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+                    <?php wp_nonce_field('llms_settings_action', 'llms_settings_nonce'); ?>
+                    <input type="hidden" name="action" value="llms_toggle_delete_settings">
+                    <?php
+                    $delete_all_data = get_option('llms_txt_generator_delete_all_data', false);
+                    ?>
+                    <label>
+                        <input type="checkbox" name="llms_delete_all_data" value="1" <?php checked($delete_all_data, true); ?>>
+                        <?php esc_html_e('アンインストール時にすべての設定を削除する', 'llms-txt-full-txt-generator'); ?>
+                    </label>
+                    <p class="description"><?php esc_html_e('このオプションを有効にすると、プラグインをアンインストールする際にすべての設定が完全に削除されます。', 'llms-txt-full-txt-generator'); ?></p>
+                    <p><input type="submit" class="button" value="<?php esc_attr_e('設定を保存', 'llms-txt-full-txt-generator'); ?>"></p>
+                </form>
+            </div>
         </div>
     </div>
 </div>
