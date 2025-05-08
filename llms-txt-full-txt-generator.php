@@ -3,7 +3,7 @@
 Plugin Name: LLMS TXT and Full TXT Generator
 Plugin URI: https://github.com/itsumonotakumi/llms-txt-full-txt-generator
 Description: サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。LLMの学習データとして利用できます。 | Outputs your site's content to llms.txt and llms-full.txt files for use as LLM training data.
-Version: 1.9.2
+Version: 2.0
 Author: いつもの匠
 Author URI: https://mobile-cheap.jp
 License: GPL v2
@@ -22,7 +22,7 @@ YouTube: https://www.youtube.com/@itsumonotakumi
  *
  * サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。
  *
- * @version 1.9.2
+ * @version 2.0
  * @author いつもの匠
  * @author rankth (Original Author)
  * @link https://mobile-cheap.jp
@@ -34,7 +34,7 @@ if (!defined('ABSPATH')) {
 }
 
 // プラグインの定数定義
-define('LLMS_TXT_GENERATOR_VERSION', '1.9.2');
+define('LLMS_TXT_GENERATOR_VERSION', '2.0');
 define('LLMS_TXT_GENERATOR_PATH', plugin_dir_path(__FILE__));
 define('LLMS_TXT_GENERATOR_URL', plugin_dir_url(__FILE__));
 
@@ -50,7 +50,7 @@ define('LLMS_TXT_GENERATOR_URL', plugin_dir_url(__FILE__));
  * デバッグモードが有効な場合のみ、ログファイルにメッセージを記録します。
  * error_log()を使用せず、WordPressの標準的な方法でログを記録します。
  *
- * @since 1.9.2
+ * @since 2.0
  * @param string $message ログに記録するメッセージ
  * @return void
  */
@@ -79,7 +79,7 @@ function llms_txt_generator_debug_log($message) {
  *
  * サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。
  *
- * @version 1.9.2
+ * @version 2.0
  * @author rankth (Original Author)
  * @author いつもの匠 (Customized Version)
  * @link https://github.com/itsumonotakumi/llms-txt-full-txt-generator
