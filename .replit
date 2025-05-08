@@ -16,3 +16,22 @@ start = "pylsp"
 [languages.php]
 pattern = "**/*.php"
 
+[workflows]
+
+[[workflows.workflow]]
+name = "Git Push"
+author = 40775327
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "git add ."
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "git commit -m \"Update: $(date '+%Y-%m-%d %H:%M:%S')\""
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "git push origin main"
+
