@@ -5,12 +5,12 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 
     <div class="nav-tab-wrapper">
-        <a href="#settings-tab" class="nav-tab nav-tab-active"><?php esc_html_e('設定', 'llms-txt-full-txt-generator'); ?></a>
-        <a href="#generate-tab" class="nav-tab"><?php esc_html_e('生成', 'llms-txt-full-txt-generator'); ?></a>
-        <a href="#help-tab" class="nav-tab"><?php esc_html_e('ヘルプ', 'llms-txt-full-txt-generator'); ?></a>
+        <a href="#settings-tab" id="settings-tab-link" class="nav-tab nav-tab-active"><?php esc_html_e('設定', 'llms-txt-full-txt-generator'); ?></a>
+        <a href="#generate-tab" id="generate-tab-link" class="nav-tab"><?php esc_html_e('生成', 'llms-txt-full-txt-generator'); ?></a>
+        <a href="#help-tab" id="help-tab-link" class="nav-tab"><?php esc_html_e('ヘルプ', 'llms-txt-full-txt-generator'); ?></a>
     </div>
 
-    <div id="settings-tab" class="tab-content" style="display:block;">
+    <div id="settings-tab" class="tab-content">
         <form method="post" action="options.php">
             <?php
             settings_fields('llms_txt_generator_settings');
@@ -122,7 +122,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         </form>
     </div>
 
-    <div id="generate-tab" class="tab-content" style="display:none;">
+    <div id="generate-tab" class="tab-content">
         <h2><?php esc_html_e('LLMS.txtファイルを生成', 'llms-txt-full-txt-generator'); ?></h2>
         <p><?php esc_html_e('下のボタンをクリックすると、現在の設定に基づいてllms.txtとllms-full.txtファイルを生成します。', 'llms-txt-full-txt-generator'); ?></p>
 
@@ -172,7 +172,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         </div>
     </div>
 
-    <div id="help-tab" class="tab-content" style="display:none;">
+    <div id="help-tab" class="tab-content">
         <h2><?php esc_html_e('ヘルプとサポート', 'llms-txt-full-txt-generator'); ?></h2>
 
         <div class="card">
@@ -301,37 +301,40 @@ https://example.com/page2
 
 <script>
 jQuery(document).ready(function($) {
-    // タブの切り替え
-    $('.nav-tab').on('click', function(e) {
-        e.preventDefault();
-
-        // タブのアクティブ状態を更新
-        $('.nav-tab').removeClass('nav-tab-active');
-        $(this).addClass('nav-tab-active');
-
-        // タブコンテンツの表示を切り替え
-        $('.tab-content').hide();
-        var targetTab = $(this).attr('href');
-        $(targetTab).show();
-        
-        // URLハッシュを更新（履歴に追加せず）
-        if (history.replaceState) {
-            history.replaceState(null, null, targetTab);
-        }
-    });
-
-    // URLハッシュによるタブ切り替え
-    if (window.location.hash) {
-        var hash = window.location.hash;
-        if ($(hash).length) {
+    $('.tab-content').hide();
+    
+    $('#settings-tab').show();
+    
+    function initTabs() {
+        if (window.location.hash && $(window.location.hash).length) {
+            var hash = window.location.hash;
             $('.nav-tab').removeClass('nav-tab-active');
             $('a[href="' + hash + '"]').addClass('nav-tab-active');
             $('.tab-content').hide();
             $(hash).show();
+        } else {
+            $('#settings-tab-link').addClass('nav-tab-active');
+            $('#settings-tab').show();
         }
     }
-
-    // スケジュール頻度フィールドの表示・非表示
+    
+    initTabs();
+    
+    $('.nav-tab').on('click', function(e) {
+        e.preventDefault();
+        
+        $('.nav-tab').removeClass('nav-tab-active');
+        $(this).addClass('nav-tab-active');
+        
+        var targetTab = $(this).attr('href');
+        $('.tab-content').hide();
+        $(targetTab).show();
+        
+        if (history.replaceState) {
+            history.replaceState(null, null, targetTab);
+        }
+    });
+    
     function toggleScheduleFrequency() {
         if ($('input[name="llms_txt_generator_schedule_enabled"]').is(':checked')) {
             $('#schedule-frequency-row').show();
@@ -339,7 +342,7 @@ jQuery(document).ready(function($) {
             $('#schedule-frequency-row').hide();
         }
     }
-
+    
     toggleScheduleFrequency();
     $('input[name="llms_txt_generator_schedule_enabled"]').change(toggleScheduleFrequency);
 });
