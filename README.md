@@ -2,7 +2,7 @@
 
 ![WordPress Version](https://img.shields.io/badge/WordPress-5.0%2B-blue)
 ![PHP Version](https://img.shields.io/badge/PHP-7.0%2B-purple)
-![License](https://img.shields.io/badge/License-GPL%20v2%2B-green)
+![License](https://img.shields.io/badge/License-GPL%20v2-green)
 ![Version](https://img.shields.io/badge/Version-1.9.2-orange)
 
 WordPressサイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力するプラグインです。LLM（大規模言語モデル）の学習データとして利用できます。
@@ -108,7 +108,7 @@ URLが正しく除外されない場合は、以下の点を確認してくだ�
 
 ## ライセンス
 
-GPL v2 or later（元のプラグインと同じライセンスを継承）
+GPL v2（元のプラグイン「LLMs-Full.txt and LLMs.txt Generator v1.9」をベースに開発）
 
 ## 開発者情報
 

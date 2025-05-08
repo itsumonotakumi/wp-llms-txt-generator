@@ -3,10 +3,10 @@
 Plugin Name: LLMS TXT and Full TXT Generator
 Plugin URI: https://github.com/itsumonotakumi/llms-txt-full-txt-generator
 Description: サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。LLMの学習データとして利用できます。 | Outputs your site's content to llms.txt and llms-full.txt files for use as LLM training data.
-Version: 2.0
+Version: 1.9.2
 Author: いつもの匠
 Author URI: https://mobile-cheap.jp
-License: GPL v2 or later
+License: GPL v2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: llms-txt-full-txt-generator
 Domain Path: /languages
@@ -22,7 +22,7 @@ YouTube: https://www.youtube.com/@itsumonotakumi
  *
  * サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。
  *
- * @version 2.0
+ * @version 1.9.2
  * @author いつもの匠
  * @author rankth (Original Author)
  * @link https://mobile-cheap.jp
@@ -34,7 +34,7 @@ if (!defined('ABSPATH')) {
 }
 
 // プラグインの定数定義
-define('LLMS_TXT_GENERATOR_VERSION', '2.0');
+define('LLMS_TXT_GENERATOR_VERSION', '1.9.2');
 define('LLMS_TXT_GENERATOR_PATH', plugin_dir_path(__FILE__));
 define('LLMS_TXT_GENERATOR_URL', plugin_dir_url(__FILE__));
 
@@ -46,6 +46,7 @@ define('LLMS_TXT_GENERATOR_URL', plugin_dir_url(__FILE__));
  */
 function llms_txt_generator_debug_log($message) {
     if (get_option('llms_txt_generator_debug_mode', false)) {
+        // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Only used when debug mode is enabled
         error_log($message);
     }
 }
@@ -55,7 +56,7 @@ function llms_txt_generator_debug_log($message) {
  *
  * サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。
  *
- * @version 2.0
+ * @version 1.9.2
  * @author rankth (Original Author)
  * @author いつもの匠 (Customized Version)
  * @link https://github.com/itsumonotakumi/llms-txt-full-txt-generator
@@ -143,10 +144,12 @@ class LLMS_TXT_Generator {
             // 既存の設定があるかチェック（プラグイン削除後の再インストール対応）
             if (get_option('llms_txt_generator_post_types') !== false) {
                 // 既存の設定が見つかった場合、再インストールと判断
+                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Only used when debug mode is enabled
                 if (get_option('llms_txt_generator_debug_mode', false)) {
                     error_log('LLMS TXT Generator: 既存の設定を検出しました。設定を引き継ぎます。');
                 }
             } else {
+                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Only used when debug mode is enabled
                 // 完全に新規インストールの場合はデフォルト設定を適用
                 if (get_option('llms_txt_generator_debug_mode', false)) {
                     error_log('LLMS TXT Generator: 新規インストールを検出しました。デフォルト設定を適用します。');
@@ -157,12 +160,14 @@ class LLMS_TXT_Generator {
             return;
         }
 
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Only used when debug mode is enabled
         // バージョンが異なる場合は更新処理
         if (version_compare($current_version, LLMS_TXT_GENERATOR_VERSION, '<')) {
             if (get_option('llms_txt_generator_debug_mode', false)) {
                 error_log('LLMS TXT Generator: バージョン ' . $current_version . ' から ' . LLMS_TXT_GENERATOR_VERSION . ' にアップデートします。');
             }
 
+                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Only used when debug mode is enabled
             // バージョン固有の移行処理をここに追加
             if (version_compare($current_version, '1.9.2', '<')) {
                 // 1.9.2より前からのアップデートの場合の処理
@@ -201,6 +206,7 @@ class LLMS_TXT_Generator {
         foreach ($default_settings as $option_name => $default_value) {
             // 注意: get_option は false を返すが、オプションの値が false の場合もあるので、
             // 厳密に存在チェックをするために第三引数にユニークな値を指定する
+                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Only used when debug mode is enabled
             $value = get_option($option_name, '__not_exists__');
             if ($value === '__not_exists__') {
                 // オプションが存在しない場合のみデフォルト値を追加
