@@ -141,7 +141,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
             if (file_exists($llms_txt_path)) {
                 $llms_txt_url = home_url('/llms.txt');
-                $modified = gmdate_i18n(get_option('date_format') . ' ' . get_option('time_format'), filemtime($llms_txt_path));
+                $modified = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), filemtime($llms_txt_path));
                 echo '<div class="file-info">';
                 /* translators: %s: URL to the llms.txt file */
                 echo '<p>' . sprintf(esc_html__('LLMS.txtファイル: %s', 'llms-txt-full-txt-generator'), '<a href="' . esc_url($llms_txt_url) . '" target="_blank">' . esc_html($llms_txt_url) . '</a>') . '</p>';
@@ -156,7 +156,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
             if (file_exists($llms_full_txt_path)) {
                 $llms_full_txt_url = home_url('/llms-full.txt');
-                $modified = gmdate_i18n(get_option('date_format') . ' ' . get_option('time_format'), filemtime($llms_full_txt_path));
+                $modified = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), filemtime($llms_full_txt_path));
                 echo '<div class="file-info">';
                 /* translators: %s: URL to the llms-full.txt file */
                 echo '<p>' . sprintf(esc_html__('LLMS-Full.txtファイル: %s', 'llms-txt-full-txt-generator'), '<a href="' . esc_url($llms_full_txt_url) . '" target="_blank">' . esc_html($llms_full_txt_url) . '</a>') . '</p>';
