@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                         $selected_post_types = get_option('llms_txt_generator_post_types', array());
                         foreach ($post_types as $post_type) {
                             $checked = in_array($post_type->name, $selected_post_types) ? 'checked' : '';
-                            echo '<label><input type="checkbox" name="llms_txt_generator_post_types[]" value="' . esc_attr($post_type->name) . '" ' . $checked . '> ' . esc_html($post_type->label) . '</label><br>';
+                            echo '<label><input type="checkbox" name="llms_txt_generator_post_types[]" value="' . esc_attr($post_type->name) . '" ' . esc_attr($checked) . '> ' . esc_html($post_type->label) . '</label><br>';
                         }
                         ?>
                         <p class="description"><?php esc_html_e('生成するファイルに含める投稿タイプを選択してください。', 'llms-txt-full-txt-generator'); ?></p>
@@ -197,11 +197,11 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                 /* translators: %1$s: Homepage URL for href, %2$s: Homepage URL for display */
                 echo '<li>' . sprintf(esc_html__('ホームページ: <a href="%1$s" target="_blank">%2$s</a>', 'llms-txt-full-txt-generator'), esc_url('https://mobile-cheap.jp'), esc_html('https://mobile-cheap.jp')) . '</li>';
                 /* translators: %s: X (Twitter) profile URL */
-                echo '<li>' . sprintf(esc_html__('X (Twitter): <a href="%s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), esc_url('https://x.com/itsumonotakumi')) . '</li>';
+                echo '<li>' . sprintf(esc_html__('X (Twitter): <a href="%1$s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), esc_url('https://x.com/itsumonotakumi')) . '</li>';
                 /* translators: %s: Threads profile URL */
-                echo '<li>' . sprintf(esc_html__('Threads: <a href="%s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), esc_url('https://www.threads.net/@itsumonotakumi')) . '</li>';
+                echo '<li>' . sprintf(esc_html__('Threads: <a href="%1$s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), esc_url('https://www.threads.net/@itsumonotakumi')) . '</li>';
                 /* translators: %s: YouTube channel URL */
-                echo '<li>' . sprintf(esc_html__('YouTube: <a href="%s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), esc_url('https://www.youtube.com/@itsumonotakumi')) . '</li>';
+                echo '<li>' . sprintf(esc_html__('YouTube: <a href="%1$s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), esc_url('https://www.youtube.com/@itsumonotakumi')) . '</li>';
                 ?>
             </ul>
         </div>

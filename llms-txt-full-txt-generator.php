@@ -3,7 +3,7 @@
 Plugin Name: LLMS TXT and Full TXT Generator
 Plugin URI: https://github.com/itsumonotakumi/llms-txt-full-txt-generator
 Description: サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。LLMの学習データとして利用できます。 | Outputs your site's content to llms.txt and llms-full.txt files for use as LLM training data.
-Version: 1.9.3
+Version: 1.9.4
 Author: いつもの匠
 Author URI: https://mobile-cheap.jp
 License: GPL v2 or later
@@ -22,7 +22,7 @@ YouTube: https://www.youtube.com/@itsumonotakumi
  *
  * サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。
  *
- * @version 1.9.3
+ * @version 1.9.4
  * @author いつもの匠
  * @author rankth (Original Author)
  * @link https://mobile-cheap.jp
@@ -34,7 +34,7 @@ if (!defined('ABSPATH')) {
 }
 
 // プラグインの定数定義
-define('LLMS_TXT_GENERATOR_VERSION', '1.9.3');
+define('LLMS_TXT_GENERATOR_VERSION', '1.9.4');
 define('LLMS_TXT_GENERATOR_PATH', plugin_dir_path(__FILE__));
 define('LLMS_TXT_GENERATOR_URL', plugin_dir_url(__FILE__));
 
@@ -43,7 +43,7 @@ define('LLMS_TXT_GENERATOR_URL', plugin_dir_url(__FILE__));
  *
  * サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。
  *
- * @version 1.9.3
+ * @version 1.9.4
  * @author rankth (Original Author)
  * @author いつもの匠 (Customized Version)
  * @link https://github.com/itsumonotakumi/llms-txt-full-txt-generator
@@ -133,10 +133,14 @@ class LLMS_TXT_Generator {
             // 既存の設定があるかチェック（プラグイン削除後の再インストール対応）
             if (get_option('llms_txt_generator_post_types') !== false) {
                 // 既存の設定が見つかった場合、再インストールと判断
-                error_log('LLMS TXT Generator: 既存の設定を検出しました。設定を引き継ぎます。');
+                if (get_option('llms_txt_generator_debug_mode', false)) {
+                    error_log('LLMS TXT Generator: 既存の設定を検出しました。設定を引き継ぎます。');
+                }
             } else {
                 // 完全に新規インストールの場合はデフォルト設定を適用
-                error_log('LLMS TXT Generator: 新規インストールを検出しました。デフォルト設定を適用します。');
+                if (get_option('llms_txt_generator_debug_mode', false)) {
+                    error_log('LLMS TXT Generator: 新規インストールを検出しました。デフォルト設定を適用します。');
+                }
                 // デフォルト設定の適用
                 $this->ensure_settings_exist();
             }
@@ -145,12 +149,16 @@ class LLMS_TXT_Generator {
 
         // バージョンが異なる場合は更新処理
         if (version_compare($current_version, LLMS_TXT_GENERATOR_VERSION, '<')) {
-            error_log('LLMS TXT Generator: バージョン ' . $current_version . ' から ' . LLMS_TXT_GENERATOR_VERSION . ' にアップデートします。');
+            if (get_option('llms_txt_generator_debug_mode', false)) {
+                error_log('LLMS TXT Generator: バージョン ' . $current_version . ' から ' . LLMS_TXT_GENERATOR_VERSION . ' にアップデートします。');
+            }
 
             // バージョン固有の移行処理をここに追加
             if (version_compare($current_version, '1.9.2', '<')) {
                 // 1.9.2より前からのアップデートの場合の処理
-                error_log('LLMS TXT Generator: 1.9.2より前のバージョンからのアップデート処理を実行します。');
+                if (get_option('llms_txt_generator_debug_mode', false)) {
+                    error_log('LLMS TXT Generator: 1.9.2より前のバージョンからのアップデート処理を実行します。');
+                }
 
                 // 設定が存在することを確認（念のため）
                 $this->ensure_settings_exist();
@@ -187,7 +195,9 @@ class LLMS_TXT_Generator {
             if ($value === '__not_exists__') {
                 // オプションが存在しない場合のみデフォルト値を追加
                 add_option($option_name, $default_value);
-                error_log('LLMS TXT Generator: 設定 ' . $option_name . ' が見つからないため、デフォルト値を設定しました。');
+                if (get_option('llms_txt_generator_debug_mode', false)) {
+                    error_log('LLMS TXT Generator: 設定 ' . $option_name . ' が見つからないため、デフォルト値を設定しました。');
+                }
             }
         }
     }
