@@ -66,7 +66,7 @@ function llms_txt_generator_debug_log($message) {
             file_put_contents(trailingslashit($log_dir) . 'index.php', '<?php // Silence is golden');
         }
         
-        $timestamp = date('Y-m-d H:i:s');
+        $timestamp = gmdate('Y-m-d H:i:s');
         $log_file = trailingslashit($log_dir) . 'debug.log';
         
         $log_message = "[{$timestamp}] {$message}\n";
