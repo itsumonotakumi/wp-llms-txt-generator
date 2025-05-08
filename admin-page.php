@@ -192,9 +192,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
             <h4><?php esc_html_e('連絡先情報', 'llms-txt-full-txt-generator'); ?></h4>
             <ul>
                 <?php
-                /* translators: %s: Email address used twice - once for mailto: link and once for display */
+                /* translators: %1$s: Email address for mailto link, %2$s: Email address for display */
                 echo '<li>' . sprintf(esc_html__('メールアドレス: <a href="mailto:%1$s">%2$s</a>', 'llms-txt-full-txt-generator'), esc_attr('llms-txt@takulog.info'), esc_html('llms-txt@takulog.info')) . '</li>';
-                /* translators: %s: Homepage URL used twice - once for href and once for display */
+                /* translators: %1$s: Homepage URL for href, %2$s: Homepage URL for display */
                 echo '<li>' . sprintf(esc_html__('ホームページ: <a href="%1$s" target="_blank">%2$s</a>', 'llms-txt-full-txt-generator'), esc_url('https://mobile-cheap.jp'), esc_html('https://mobile-cheap.jp')) . '</li>';
                 /* translators: %s: X (Twitter) profile URL */
                 echo '<li>' . sprintf(esc_html__('X (Twitter): <a href="%1$s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), esc_url('https://x.com/itsumonotakumi')) . '</li>';

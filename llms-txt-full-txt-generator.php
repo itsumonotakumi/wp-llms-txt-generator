@@ -3,7 +3,7 @@
 Plugin Name: LLMS TXT and Full TXT Generator
 Plugin URI: https://github.com/itsumonotakumi/llms-txt-full-txt-generator
 Description: サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。LLMの学習データとして利用できます。 | Outputs your site's content to llms.txt and llms-full.txt files for use as LLM training data.
-Version: 1.9.3
+Version: 1.9.4
 Author: いつもの匠
 Author URI: https://mobile-cheap.jp
 License: GPL v2 or later
@@ -22,7 +22,7 @@ YouTube: https://www.youtube.com/@itsumonotakumi
  *
  * サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。
  *
- * @version 1.9.3
+ * @version 1.9.4
  * @author いつもの匠
  * @author rankth (Original Author)
  * @link https://mobile-cheap.jp
@@ -34,7 +34,7 @@ if (!defined('ABSPATH')) {
 }
 
 // プラグインの定数定義
-define('LLMS_TXT_GENERATOR_VERSION', '1.9.3');
+define('LLMS_TXT_GENERATOR_VERSION', '1.9.4');
 define('LLMS_TXT_GENERATOR_PATH', plugin_dir_path(__FILE__));
 define('LLMS_TXT_GENERATOR_URL', plugin_dir_url(__FILE__));
 
@@ -43,7 +43,7 @@ define('LLMS_TXT_GENERATOR_URL', plugin_dir_url(__FILE__));
  *
  * サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。
  *
- * @version 1.9.3
+ * @version 1.9.4
  * @author rankth (Original Author)
  * @author いつもの匠 (Customized Version)
  * @link https://github.com/itsumonotakumi/llms-txt-full-txt-generator
@@ -227,7 +227,7 @@ class LLMS_TXT_Generator {
      * llms.txtファイルへのリクエストを処理
      */
     public function handle_txt_file_requests() {
-        $request_uri = esc_url_raw(wp_unslash($_SERVER['REQUEST_URI']));
+        $request_uri = isset($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : '';
         $request_uri = parse_url($request_uri, PHP_URL_PATH);
 
         if ($request_uri === '/llms.txt' || $request_uri === '/llms-full.txt') {
@@ -379,7 +379,7 @@ class LLMS_TXT_Generator {
      * 管理画面の表示
      */
     public function admin_page() {
-        if (isset($_GET['llms_generated']) && sanitize_text_field($_GET['llms_generated']) === 'true') {
+        if (isset($_GET['llms_generated']) && sanitize_text_field(wp_unslash($_GET['llms_generated'])) === 'true') {
             add_settings_error('llms_txt_generator', 'files_generated', esc_html__('LLMS.txtファイルが正常に生成されました。', 'llms-txt-full-txt-generator'), 'updated');
         }
         settings_errors('llms_txt_generator');
