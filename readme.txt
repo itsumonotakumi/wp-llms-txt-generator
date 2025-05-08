@@ -2,10 +2,10 @@
 Contributors: itsumonotakumi, rankth
 Tags: llm, ai, txt, content export, large language model
 Requires at least: 5.0
-Tested up to: 6.4
-Stable tag: 1.9.2
+Tested up to: 6.8
+Stable tag: 2.0
 Requires PHP: 7.0
-License: GPLv2 or later
+License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 WordPressサイト内のコンテンツをLLM（大規模言語モデル）の学習データとして利用できるllms.txtとllms-full.txtファイルに出力します。
@@ -82,6 +82,33 @@ llms.txtはURLと投稿タイトルのリストのみを含み、llms-full.txt�
 
 == Changelog ==
 
+= 2.0 =
+* Plugin Checkの警告をすべて解消: error_log()呼び出しを完全に削除
+* 適切なデバッグログシステムの実装: デバッグモードが有効な場合のみログを出力
+* date()関数をgmdate()に置き換えてタイムゾーン問題を解決
+* ドキュメントの更新とライセンス表記の明確化
+* 元のプラグインバージョンへの明示的な参照を追加
+
+= 1.9.6 =
+* Plugin Checkの警告を解消: error_log()呼び出しをカスタムデバッグ関数に置き換え
+* uninstall.phpのerror_log()呼び出しを修正
+* コード品質の向上: デバッグログ処理の一貫性を改善
+
+= 1.9.5 =
+* コード品質の向上: error_logをデバッグモード時のみ実行するよう改善（重複条件の削除）
+* セキュリティの強化: 出力の適切なエスケープとサニタイズの実装
+
+= 1.9.4 =
+* 国際化の改善: 翻訳者向けコメントの追加とプレースホルダーの順番指定
+* セキュリティの強化: 出力の適切なエスケープとサニタイズの実装
+* コード品質の向上: error_logをデバッグモード時のみ実行するよう改善
+* WordPress標準に準拠するため.gitignoreをgitignore.txtにリネーム
+
+= 1.9.3 =
+* 日本語テキストの文字化けを修正するためにUTF-8エンコーディングを実装
+* ファイル書き込み時にUTF-8 BOMを追加して文字コードを明示
+* mbstring拡張モジュールの依存関係チェックを追加
+
 = 1.9.2 =
 * 多言語対応を追加（日本語・英語）
 * readme.txtの改善とスクリーンショットの追加
@@ -106,6 +133,21 @@ llms.txtはURLと投稿タイトルのリストのみを含み、llms-full.txt�
 * オリジナルバージョン by rankth
 
 == Upgrade Notice ==
+
+= 2.0 =
+メジャーバージョンアップデート: Plugin Checkの警告をすべて解消し、コード品質とセキュリティを向上させました。date()関数をgmdate()に置き換え、適切なデバッグログシステムを実装しました。
+
+= 1.9.6 =
+この更新ではPlugin Checkツールで検出されたerror_log()に関する警告を解消し、デバッグログ処理の一貫性を向上させています。
+
+= 1.9.5 =
+この更新ではコード品質の向上とセキュリティの強化が行われています。Plugin Checkツールで検出された問題が修正されています。
+
+= 1.9.4 =
+この更新では国際化の改善、セキュリティの強化、コード品質の向上が行われています。Plugin Checkツールで検出された問題が修正されています。
+
+= 1.9.3 =
+この更新では日本語テキストの文字化け問題が修正され、UTF-8エンコーディングが正しく実装されています。
 
 = 1.9.2 =
 この更新では多言語対応（日本語・英語）が追加され、UIの改善が行われています。
