@@ -44,10 +44,33 @@ define('LLMS_TXT_GENERATOR_URL', plugin_dir_url(__FILE__));
  * @param string $message ログメッセージ
  * @return void
  */
+/**
+ * デバッグログを記録する関数
+ *
+ * デバッグモードが有効な場合のみ、ログファイルにメッセージを記録します。
+ * error_log()を使用せず、WordPressの標準的な方法でログを記録します。
+ *
+ * @since 1.9.2
+ * @param string $message ログに記録するメッセージ
+ * @return void
+ */
 function llms_txt_generator_debug_log($message) {
     if (get_option('llms_txt_generator_debug_mode', false)) {
-        // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Only used when debug mode is enabled
-        error_log($message);
+        $upload_dir = wp_upload_dir();
+        $log_dir = trailingslashit($upload_dir['basedir']) . 'llms-txt-generator-logs';
+        
+        if (!file_exists($log_dir)) {
+            wp_mkdir_p($log_dir);
+            $htaccess_content = "Order deny,allow\nDeny from all";
+            file_put_contents(trailingslashit($log_dir) . '.htaccess', $htaccess_content);
+            file_put_contents(trailingslashit($log_dir) . 'index.php', '<?php // Silence is golden');
+        }
+        
+        $timestamp = date('Y-m-d H:i:s');
+        $log_file = trailingslashit($log_dir) . 'debug.log';
+        
+        $log_message = "[{$timestamp}] {$message}\n";
+        file_put_contents($log_file, $log_message, FILE_APPEND);
     }
 }
 
@@ -144,36 +167,23 @@ class LLMS_TXT_Generator {
             // 既存の設定があるかチェック（プラグイン削除後の再インストール対応）
             if (get_option('llms_txt_generator_post_types') !== false) {
                 // 既存の設定が見つかった場合、再インストールと判断
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Only used when debug mode is enabled
-                if (get_option('llms_txt_generator_debug_mode', false)) {
-                    error_log('LLMS TXT Generator: 既存の設定を検出しました。設定を引き継ぎます。');
-                }
+                llms_txt_generator_debug_log('LLMS TXT Generator: 既存の設定を検出しました。設定を引き継ぎます。');
             } else {
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Only used when debug mode is enabled
                 // 完全に新規インストールの場合はデフォルト設定を適用
-                if (get_option('llms_txt_generator_debug_mode', false)) {
-                    error_log('LLMS TXT Generator: 新規インストールを検出しました。デフォルト設定を適用します。');
-                }
+                llms_txt_generator_debug_log('LLMS TXT Generator: 新規インストールを検出しました。デフォルト設定を適用します。');
                 // デフォルト設定の適用
                 $this->ensure_settings_exist();
             }
             return;
         }
 
-                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Only used when debug mode is enabled
         // バージョンが異なる場合は更新処理
         if (version_compare($current_version, LLMS_TXT_GENERATOR_VERSION, '<')) {
-            if (get_option('llms_txt_generator_debug_mode', false)) {
-                error_log('LLMS TXT Generator: バージョン ' . $current_version . ' から ' . LLMS_TXT_GENERATOR_VERSION . ' にアップデートします。');
-            }
-
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Only used when debug mode is enabled
+            llms_txt_generator_debug_log('LLMS TXT Generator: バージョン ' . $current_version . ' から ' . LLMS_TXT_GENERATOR_VERSION . ' にアップデートします。');
             // バージョン固有の移行処理をここに追加
             if (version_compare($current_version, '1.9.2', '<')) {
                 // 1.9.2より前からのアップデートの場合の処理
-                if (get_option('llms_txt_generator_debug_mode', false)) {
-                    error_log('LLMS TXT Generator: 1.9.2より前のバージョンからのアップデート処理を実行します。');
-                }
+                llms_txt_generator_debug_log('LLMS TXT Generator: 1.9.2より前のバージョンからのアップデート処理を実行します。');
 
                 // 設定が存在することを確認（念のため）
                 $this->ensure_settings_exist();
@@ -206,14 +216,11 @@ class LLMS_TXT_Generator {
         foreach ($default_settings as $option_name => $default_value) {
             // 注意: get_option は false を返すが、オプションの値が false の場合もあるので、
             // 厳密に存在チェックをするために第三引数にユニークな値を指定する
-                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Only used when debug mode is enabled
             $value = get_option($option_name, '__not_exists__');
             if ($value === '__not_exists__') {
                 // オプションが存在しない場合のみデフォルト値を追加
                 add_option($option_name, $default_value);
-                if (get_option('llms_txt_generator_debug_mode', false)) {
-                    error_log('LLMS TXT Generator: 設定 ' . $option_name . ' が見つからないため、デフォルト値を設定しました。');
-                }
+                llms_txt_generator_debug_log('LLMS TXT Generator: 設定 ' . $option_name . ' が見つからないため、デフォルト値を設定しました。');
             }
         }
     }

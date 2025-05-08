@@ -38,7 +38,21 @@ if ($delete_all_options) {
 	// バージョン情報だけ残して他は消さない
 	// バージョン情報があると次回のインストール時に設定を引き継ぐことができる
 	if (get_option('llms_txt_generator_debug_mode', false)) {
-		// error_log('LLMS TXT Generator: アンインストール時に設定を保持しました。');
+		// デバッグモードが有効な場合のみログを記録（error_log()を使用しない）
+		$upload_dir = wp_upload_dir();
+		$log_dir = trailingslashit($upload_dir['basedir']) . 'llms-txt-generator-logs';
+		
+		// ログディレクトリが存在しない場合は作成
+		if (!file_exists($log_dir)) {
+			wp_mkdir_p($log_dir);
+			file_put_contents(trailingslashit($log_dir) . '.htaccess', "Order deny,allow\nDeny from all");
+		}
+		
+		$log_file = trailingslashit($log_dir) . 'debug.log';
+		$timestamp = date('Y-m-d H:i:s');
+		$message = 'LLMS TXT Generator: アンインストール時に設定を保持しました。';
+		
+		file_put_contents($log_file, "[{$timestamp}] {$message}\n", FILE_APPEND);
 	}
 }
 
