@@ -3,7 +3,7 @@
 Plugin Name: LLMS TXT and Full TXT Generator
 Plugin URI: https://github.com/itsumonotakumi/llms-txt-full-txt-generator
 Description: サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。LLMの学習データとして利用できます。 | Outputs your site's content to llms.txt and llms-full.txt files for use as LLM training data.
-Version: 1.9.5
+Version: 1.9.6
 Author: いつもの匠
 Author URI: https://mobile-cheap.jp
 License: GPL v2 or later
@@ -34,9 +34,21 @@ if (!defined('ABSPATH')) {
 }
 
 // プラグインの定数定義
-define('LLMS_TXT_GENERATOR_VERSION', '1.9.5');
+define('LLMS_TXT_GENERATOR_VERSION', '1.9.6');
 define('LLMS_TXT_GENERATOR_PATH', plugin_dir_path(__FILE__));
 define('LLMS_TXT_GENERATOR_URL', plugin_dir_url(__FILE__));
+
+/**
+ * デバッグログを記録する関数
+ * 
+ * @param string $message ログメッセージ
+ * @return void
+ */
+function llms_txt_generator_debug_log($message) {
+    if (get_option('llms_txt_generator_debug_mode', false)) {
+        error_log($message);
+    }
+}
 
 /**
  * LLMS TXT and Full TXT Generator
@@ -114,9 +126,7 @@ class LLMS_TXT_Generator {
         // バージョン情報を更新
         update_option('llms_txt_generator_version', LLMS_TXT_GENERATOR_VERSION);
 
-        if (get_option('llms_txt_generator_debug_mode', false)) {
-            error_log('LLMS TXT Generator: プラグインが有効化されました。バージョン: ' . LLMS_TXT_GENERATOR_VERSION);
-        }
+        llms_txt_generator_debug_log('LLMS TXT Generator: プラグインが有効化されました。バージョン: ' . LLMS_TXT_GENERATOR_VERSION);
     }
 
     /**
