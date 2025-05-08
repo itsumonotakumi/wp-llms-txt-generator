@@ -3,7 +3,7 @@
 Plugin Name: LLMS TXT and Full TXT Generator
 Plugin URI: https://github.com/itsumonotakumi/llms-txt-full-txt-generator
 Description: サイト内の投稿やページを自動的にllms.txtとllms-full.txtファイルに出力します。LLMの学習データとして利用できます。 | Outputs your site's content to llms.txt and llms-full.txt files for use as LLM training data.
-Version: 1.9.4
+Version: 1.9.5
 Author: いつもの匠
 Author URI: https://mobile-cheap.jp
 License: GPL v2 or later
@@ -34,7 +34,7 @@ if (!defined('ABSPATH')) {
 }
 
 // プラグインの定数定義
-define('LLMS_TXT_GENERATOR_VERSION', '1.9.4');
+define('LLMS_TXT_GENERATOR_VERSION', '1.9.5');
 define('LLMS_TXT_GENERATOR_PATH', plugin_dir_path(__FILE__));
 define('LLMS_TXT_GENERATOR_URL', plugin_dir_url(__FILE__));
 
@@ -228,7 +228,7 @@ class LLMS_TXT_Generator {
      */
     public function handle_txt_file_requests() {
         $request_uri = isset($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : '';
-        $request_uri = parse_url($request_uri, PHP_URL_PATH);
+        $request_uri = wp_parse_url($request_uri, PHP_URL_PATH);
 
         if ($request_uri === '/llms.txt' || $request_uri === '/llms-full.txt') {
             $filename = ABSPATH . substr($request_uri, 1);
@@ -379,8 +379,14 @@ class LLMS_TXT_Generator {
      * 管理画面の表示
      */
     public function admin_page() {
-        if (isset($_GET['llms_generated']) && sanitize_text_field(wp_unslash($_GET['llms_generated'])) === 'true') {
-            add_settings_error('llms_txt_generator', 'files_generated', esc_html__('LLMS.txtファイルが正常に生成されました。', 'llms-txt-full-txt-generator'), 'updated');
+        if (isset($_GET['llms_generated'])) {
+            if (!isset($_GET['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'llms_generate_view')) {
+                wp_die(esc_html__('セキュリティチェックに失敗しました。', 'llms-txt-full-txt-generator'));
+            }
+            
+            if (sanitize_text_field(wp_unslash($_GET['llms_generated'])) === 'true') {
+                add_settings_error('llms_txt_generator', 'files_generated', esc_html__('LLMS.txtファイルが正常に生成されました。', 'llms-txt-full-txt-generator'), 'updated');
+            }
         }
         settings_errors('llms_txt_generator');
         include plugin_dir_path(__FILE__) . 'admin-page.php';
@@ -391,11 +397,11 @@ class LLMS_TXT_Generator {
      */
     public function handle_generate_llms_txt() {
         if (!current_user_can('manage_options')) {
-            wp_die(__('このページにアクセスするための十分な権限がありません。', 'llms-txt-full-txt-generator'));
+            wp_die(esc_html__('このページにアクセスするための十分な権限がありません。', 'llms-txt-full-txt-generator'));
         }
 
         if (!isset($_POST['llms_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['llms_nonce'])), 'llms_generate_action')) {
-            wp_die(__('無効なnonceが指定されました', 'llms-txt-full-txt-generator'));
+            wp_die(esc_html__('無効なnonceが指定されました', 'llms-txt-full-txt-generator'));
         }
 
         $this->generate_llms_txt_files();
@@ -824,11 +830,11 @@ class LLMS_TXT_Generator {
      */
     public function handle_toggle_delete_settings() {
         if (!current_user_can('manage_options')) {
-            wp_die(__('このページにアクセスするための十分な権限がありません。', 'llms-txt-full-txt-generator'));
+            wp_die(esc_html__('このページにアクセスするための十分な権限がありません。', 'llms-txt-full-txt-generator'));
         }
 
         if (!isset($_POST['llms_settings_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['llms_settings_nonce'])), 'llms_settings_action')) {
-            wp_die(__('無効なnonceが指定されました', 'llms-txt-full-txt-generator'));
+            wp_die(esc_html__('無効なnonceが指定されました', 'llms-txt-full-txt-generator'));
         }
 
         $delete_all_data = isset($_POST['llms_delete_all_data']) ? true : false;

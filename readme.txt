@@ -3,7 +3,7 @@ Contributors: itsumonotakumi, rankth
 Tags: llm, ai, txt, content export, large language model
 Requires at least: 5.0
 Tested up to: 6.8
-Stable tag: 1.9.4
+Stable tag: 1.9.5
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -82,6 +82,10 @@ llms.txtはURLと投稿タイトルのリストのみを含み、llms-full.txt�
 
 == Changelog ==
 
+= 1.9.5 =
+* コード品質の向上: error_logをデバッグモード時のみ実行するよう改善（重複条件の削除）
+* セキュリティの強化: 出力の適切なエスケープとサニタイズの実装
+
 = 1.9.4 =
 * 国際化の改善: 翻訳者向けコメントの追加とプレースホルダーの順番指定
 * セキュリティの強化: 出力の適切なエスケープとサニタイズの実装
@@ -117,6 +121,9 @@ llms.txtはURLと投稿タイトルのリストのみを含み、llms-full.txt�
 * オリジナルバージョン by rankth
 
 == Upgrade Notice ==
+
+= 1.9.5 =
+この更新ではコード品質の向上とセキュリティの強化が行われています。Plugin Checkツールで検出された問題が修正されています。
 
 = 1.9.4 =
 この更新では国際化の改善、セキュリティの強化、コード品質の向上が行われています。Plugin Checkツールで検出された問題が修正されています。
