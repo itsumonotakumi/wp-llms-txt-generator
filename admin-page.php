@@ -5,12 +5,12 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 
     <div class="nav-tab-wrapper">
-        <a href="#settings-tab" class="nav-tab nav-tab-active"><?php esc_html_e('設定', 'llms-txt-full-txt-generator'); ?></a>
-        <a href="#generate-tab" class="nav-tab"><?php esc_html_e('生成', 'llms-txt-full-txt-generator'); ?></a>
-        <a href="#help-tab" class="nav-tab"><?php esc_html_e('ヘルプ', 'llms-txt-full-txt-generator'); ?></a>
+        <a href="#settings-tab" id="settings-tab-link" class="nav-tab nav-tab-active"><?php esc_html_e('設定', 'llms-txt-full-txt-generator'); ?></a>
+        <a href="#generate-tab" id="generate-tab-link" class="nav-tab"><?php esc_html_e('生成', 'llms-txt-full-txt-generator'); ?></a>
+        <a href="#help-tab" id="help-tab-link" class="nav-tab"><?php esc_html_e('ヘルプ', 'llms-txt-full-txt-generator'); ?></a>
     </div>
 
-    <div id="settings-tab" class="tab-content active">
+    <div id="settings-tab" class="tab-content">
         <form method="post" action="options.php">
             <?php
             settings_fields('llms_txt_generator_settings');
@@ -122,7 +122,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         </form>
     </div>
 
-    <div id="generate-tab" class="tab-content" style="display:none;">
+    <div id="generate-tab" class="tab-content">
         <h2><?php esc_html_e('LLMS.txtファイルを生成', 'llms-txt-full-txt-generator'); ?></h2>
         <p><?php esc_html_e('下のボタンをクリックすると、現在の設定に基づいてllms.txtとllms-full.txtファイルを生成します。', 'llms-txt-full-txt-generator'); ?></p>
 
@@ -172,7 +172,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         </div>
     </div>
 
-    <div id="help-tab" class="tab-content" style="display:none;">
+    <div id="help-tab" class="tab-content">
         <h2><?php esc_html_e('ヘルプとサポート', 'llms-txt-full-txt-generator'); ?></h2>
 
         <div class="card">
@@ -211,61 +211,56 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
             <p><?php esc_html_e('このプラグインは、WordPressサイトのコンテンツをAIの学習データとして利用するためのllms.txtとllms-full.txtファイルを生成します。', 'llms-txt-full-txt-generator'); ?></p>
             <ol>
                 <li><?php esc_html_e('設定タブで、ファイルに含める投稿タイプを選択します。', 'llms-txt-full-txt-generator'); ?></li>
-                <li><?php esc_html_e('必要に応じてカスタムヘッダーテキストを追加し、抜粋を含めるかどうかを設定します。', 'llms-txt-full-txt-generator'); ?></li>
-                <li><?php esc_html_e('特定のURLだけを含めたり、除外したりするためのフィルターを設定できます。', 'llms-txt-full-txt-generator'); ?></li>
-                <li><?php esc_html_e('生成タブで「LLMS.txtファイルを生成」ボタンをクリックして、ファイルを生成します。', 'llms-txt-full-txt-generator'); ?></li>
+                <li><?php esc_html_e('必要に応じて、カスタムヘッダーテキストを追加します。', 'llms-txt-full-txt-generator'); ?></li>
+                <li><?php esc_html_e('「抜粋を含める」オプションを設定します（llms-full.txtに投稿の抜粋を含めるかどうか）。', 'llms-txt-full-txt-generator'); ?></li>
+                <li><?php esc_html_e('「投稿の変更時に自動更新」を有効にすると、コンテンツ更新時に自動的にファイルが生成されます。', 'llms-txt-full-txt-generator'); ?></li>
+                <li><?php esc_html_e('「定期的に自動生成」を有効にして頻度を設定すると、指定した間隔で自動的にファイルが生成されます。', 'llms-txt-full-txt-generator'); ?></li>
+                <li><?php esc_html_e('「デバッグモード」を有効にすると、URL処理の詳細なログが生成されます。', 'llms-txt-full-txt-generator'); ?></li>
+                <li><?php esc_html_e('「含めるURL」に特定のパターンを指定すると、そのパターンに一致するURLのみが含まれます（空の場合はすべて含まれます）。', 'llms-txt-full-txt-generator'); ?></li>
+                <li><?php esc_html_e('「除外するURL」に特定のパターンを指定すると、そのパターンに一致するURLは除外されます。', 'llms-txt-full-txt-generator'); ?></li>
+                <li><?php esc_html_e('設定を保存した後、「生成」タブで「LLMS.txtファイルを生成」ボタンをクリックします。', 'llms-txt-full-txt-generator'); ?></li>
             </ol>
-        </div>
 
-        <div class="card">
-            <h3><?php esc_html_e('自動更新について', 'llms-txt-full-txt-generator'); ?></h3>
-            <p><?php esc_html_e('「投稿の変更時に自動更新」を有効にすると、投稿の追加・更新・削除時に自動的にファイルが生成されます。', 'llms-txt-full-txt-generator'); ?></p>
-            <p><?php esc_html_e('「定期的に自動生成」を有効にすると、指定した頻度（毎時、1日2回、毎日、毎週）でファイルが自動的に生成されます。', 'llms-txt-full-txt-generator'); ?></p>
-        </div>
-
-        <div class="card">
-            <h3><?php esc_html_e('URLフィルターの使い方', 'llms-txt-full-txt-generator'); ?></h3>
-            <p><?php esc_html_e('URLフィルターでは、*をワイルドカードとして使用できます。例：', 'llms-txt-full-txt-generator'); ?></p>
+            <h4><?php esc_html_e('URLフィルターの使い方', 'llms-txt-full-txt-generator'); ?></h4>
+            <p><?php esc_html_e('URLフィルターでは、ワイルドカード（*）を使用してパターンを指定できます。例：', 'llms-txt-full-txt-generator'); ?></p>
             <ul>
-                <li><?php esc_html_e('/blog/* - blogディレクトリ内のすべてのページを対象にします', 'llms-txt-full-txt-generator'); ?></li>
-                <li><?php esc_html_e('*/2023/* - 2023を含むURLすべてを対象にします', 'llms-txt-full-txt-generator'); ?></li>
+                <li><code>/blog/*</code> - <?php esc_html_e('blogディレクトリ内のすべてのページを対象にします', 'llms-txt-full-txt-generator'); ?></li>
+                <li><code>*/2023/*</code> - <?php esc_html_e('2023を含むURLすべてを対象にします', 'llms-txt-full-txt-generator'); ?></li>
             </ul>
-            <p><?php esc_html_e('「含めるURL」が空の場合、すべてのURLが対象になります。「除外するURL」が設定されている場合、それらは常に除外されます。', 'llms-txt-full-txt-generator'); ?></p>
-
-            <h4><?php esc_html_e('特定のURLを除外する例', 'llms-txt-full-txt-generator'); ?></h4>
-            <p><?php esc_html_e('以下のような形式で入力します：', 'llms-txt-full-txt-generator'); ?></p>
-            <pre style="background: #f8f9fa; padding: 10px; border-left: 4px solid #ddd;">
-https://example.com/page1
+            <p><?php esc_html_e('入力例：', 'llms-txt-full-txt-generator'); ?></p>
+            <pre>https://example.com/page1
 https://example.com/page2
 /contact
 /about-us
-*/exclude-this-part/*
-</pre>
-            <p><?php esc_html_e('注意事項：', 'llms-txt-full-txt-generator'); ?></p>
-            <ul>
-                <li><?php esc_html_e('URLの末尾のスラッシュは自動的に削除されるため、/contact/ と /contact は同じものとして扱われます', 'llms-txt-full-txt-generator'); ?></li>
-                <li><?php esc_html_e('絶対URLと相対URL（/から始まるパス）の両方が使用できます', 'llms-txt-full-txt-generator'); ?></li>
-                <li><?php esc_html_e('デバッグモードを有効にすると、URL処理の詳細ログが生成されます', 'llms-txt-full-txt-generator'); ?></li>
-            </ul>
+*/exclude-this-part/*</pre>
+            <p class="description"><?php esc_html_e('注意: URLの末尾のスラッシュは自動的に削除されるため、/contact/ と /contact は同じものとして扱われます。', 'llms-txt-full-txt-generator'); ?></p>
+        </div>
+
+        <div class="card">
+            <h3><?php esc_html_e('トラブルシューティング', 'llms-txt-full-txt-generator'); ?></h3>
+            <p><?php esc_html_e('URLが正しく除外されない場合は、以下の点を確認してください：', 'llms-txt-full-txt-generator'); ?></p>
+            <ol>
+                <li><?php esc_html_e('デバッグモードを有効にして、URL処理のログを確認', 'llms-txt-full-txt-generator'); ?></li>
+                <li><?php esc_html_e('URLの形式が正しいか（絶対URLと相対URL）', 'llms-txt-full-txt-generator'); ?></li>
+                <li><?php esc_html_e('ワイルドカードの使用方法が適切か', 'llms-txt-full-txt-generator'); ?></li>
+            </ol>
+            <p><?php esc_html_e('デバッグログは以下の場所に保存されます：', 'llms-txt-full-txt-generator'); ?></p>
+            <code>wp-content/plugins/llms-txt-full-txt-generator/logs/url_debug.log</code>
         </div>
 
         <div class="card">
             <h3><?php esc_html_e('高度な設定', 'llms-txt-full-txt-generator'); ?></h3>
-            <div class="notice notice-warning" style="padding: 10px; margin: 10px 0;">
-                <p><strong><?php esc_html_e('アンインストール時の設定保持', 'llms-txt-full-txt-generator'); ?></strong></p>
-                <p><?php esc_html_e('デフォルトでは、プラグインをアンインストール（削除）しても設定は保持されます。これにより、再インストール時に以前の設定が自動的に復元されます。', 'llms-txt-full-txt-generator'); ?></p>
-                <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
-                    <?php wp_nonce_field('llms_settings_action', 'llms_settings_nonce'); ?>
-                    <input type="hidden" name="action" value="llms_toggle_delete_settings">
-                    <?php
-                    $delete_all_data = get_option('llms_txt_generator_delete_all_data', false);
-                    ?>
-                    <label>
-                        <input type="checkbox" name="llms_delete_all_data" value="1" <?php checked($delete_all_data, true); ?>>
-                        <?php esc_html_e('アンインストール時にすべての設定を削除する', 'llms-txt-full-txt-generator'); ?>
-                    </label>
-                    <p class="description"><?php esc_html_e('このオプションを有効にすると、プラグインをアンインストールする際にすべての設定が完全に削除されます。', 'llms-txt-full-txt-generator'); ?></p>
-                    <p><input type="submit" class="button" value="<?php esc_attr_e('設定を保存', 'llms-txt-full-txt-generator'); ?>"></p>
+            
+            <div class="advanced-setting">
+                <h4><?php esc_html_e('アンインストール時の設定保持', 'llms-txt-full-txt-generator'); ?></h4>
+                <form method="post" action="options.php">
+                    <?php settings_fields('llms_txt_generator_uninstall_settings'); ?>
+                    <p>
+                        <input type="checkbox" name="llms_txt_generator_keep_settings" value="1" <?php checked(1, get_option('llms_txt_generator_keep_settings', false), true); ?> />
+                        <?php esc_html_e('プラグインをアンインストールしても設定を保持する', 'llms-txt-full-txt-generator'); ?>
+                    </p>
+                    <p class="description"><?php esc_html_e('有効にすると、プラグインをアンインストールしても設定が削除されません。再インストール時に以前の設定を引き継ぐことができます。', 'llms-txt-full-txt-generator'); ?></p>
+                    <?php submit_button(__('設定を保存', 'llms-txt-full-txt-generator')); ?>
                 </form>
             </div>
         </div>
@@ -273,55 +268,73 @@ https://example.com/page2
 </div>
 
 <style>
-.tab-content {
-    margin-top: 20px;
-}
-.tab-content:not(.active) {
-    display: none;
-}
 .card {
     background: #fff;
-    border: 1px solid #ccd0d4;
-    border-radius: 4px;
-    padding: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    border: 1px solid #c3c4c7;
+    border-radius: 2px;
+    margin-top: 20px;
+    padding: 20px;
+    position: relative;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.04);
 }
+
+.advanced-setting {
+    margin-bottom: 20px;
+}
+
 .file-info {
     background: #f8f9fa;
     border-left: 4px solid #2271b1;
     padding: 10px;
     margin-bottom: 15px;
 }
+
+.tab-content {
+    display: none;
+    margin-top: 20px;
+}
+
+#settings-tab {
+    display: block;
+}
 </style>
 
 <script>
 jQuery(document).ready(function($) {
-    // タブの切り替え
-    $('.nav-tab').on('click', function(e) {
-        e.preventDefault();
-
-        // タブのアクティブ状態を更新
-        $('.nav-tab').removeClass('nav-tab-active');
-        $(this).addClass('nav-tab-active');
-
-        // タブコンテンツの表示を切り替え
-        $('.tab-content').hide();
-        $($(this).attr('href')).show();
-    });
-
-    // URLハッシュによるタブ切り替え
-    if (window.location.hash) {
-        const hash = window.location.hash;
-        if ($(hash + '-tab').length) {
+    $('.tab-content').hide();
+    
+    $('#settings-tab').show();
+    
+    function initTabs() {
+        if (window.location.hash && $(window.location.hash).length) {
+            var hash = window.location.hash;
             $('.nav-tab').removeClass('nav-tab-active');
             $('a[href="' + hash + '"]').addClass('nav-tab-active');
             $('.tab-content').hide();
             $(hash).show();
+        } else {
+            $('#settings-tab-link').addClass('nav-tab-active');
+            $('#settings-tab').show();
         }
     }
-
-    // スケジュール頻度フィールドの表示・非表示
+    
+    initTabs();
+    
+    $('.nav-tab').on('click', function(e) {
+        e.preventDefault();
+        
+        $('.nav-tab').removeClass('nav-tab-active');
+        $(this).addClass('nav-tab-active');
+        
+        var targetTab = $(this).attr('href');
+        $('.tab-content').hide();
+        $(targetTab).show();
+        
+        if (history.replaceState) {
+            history.replaceState(null, null, targetTab);
+        }
+    });
+    
     function toggleScheduleFrequency() {
         if ($('input[name="llms_txt_generator_schedule_enabled"]').is(':checked')) {
             $('#schedule-frequency-row').show();
@@ -329,7 +342,7 @@ jQuery(document).ready(function($) {
             $('#schedule-frequency-row').hide();
         }
     }
-
+    
     toggleScheduleFrequency();
     $('input[name="llms_txt_generator_schedule_enabled"]').change(toggleScheduleFrequency);
 });
