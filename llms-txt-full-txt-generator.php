@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Plugin Name: LLMS TXT and Full TXT Generator
@@ -19,12 +18,25 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-require_once plugin_dir_path(__FILE__) . 'admin-page.php';
+// 管理画面関連の関数が確実に読み込まれているようにする
+if (is_admin()) {
+    require_once(ABSPATH . 'wp-admin/includes/template.php');
+}
+
+// admin-page.phpを直接読み込まないように修正
+// 管理画面表示関数内で必要なときに読み込むようにする
+// require_once plugin_dir_path(__FILE__) . 'admin-page.php';
 
 class LLMS_TXT_Generator {
     public function __construct() {
         add_action('admin_menu', array($this, 'add_admin_menu'));
         add_action('plugins_loaded', array($this, 'load_textdomain'));
+
+        // 設定を登録
+        add_action('admin_init', array($this, 'register_settings'));
+
+        // admin-post.phpで処理するアクションフックを追加
+        add_action('admin_post_generate_llms_txt', array($this, 'handle_generate_llms_txt'));
     }
 
     public function add_admin_menu() {
@@ -46,7 +58,190 @@ class LLMS_TXT_Generator {
     }
 
     public function admin_page() {
-        include plugin_dir_path(__FILE__) . 'admin-page.php';
+        // 必要なWordPress管理画面関数を確認
+        if (!function_exists('do_settings_sections')) {
+            require_once(ABSPATH . 'wp-admin/includes/template.php');
+        }
+
+        // ここでadmin-page.phpをincludeする
+        include_once plugin_dir_path(__FILE__) . 'admin-page.php';
+
+        // 管理画面のHTMLを出力する関数を呼び出す
+        llms_txt_generator_admin_page_content();
+    }
+
+    public function register_settings() {
+        // 設定を登録
+        register_setting('llms_txt_generator_settings', 'llms_txt_generator_post_types');
+        register_setting('llms_txt_generator_settings', 'llms_txt_generator_custom_header');
+        register_setting('llms_txt_generator_settings', 'llms_txt_generator_include_excerpt');
+        register_setting('llms_txt_generator_settings', 'llms_txt_generator_auto_update');
+        register_setting('llms_txt_generator_settings', 'llms_txt_generator_debug_mode');
+        register_setting('llms_txt_generator_settings', 'llms_txt_generator_schedule_enabled');
+        register_setting('llms_txt_generator_settings', 'llms_txt_generator_schedule_frequency');
+        register_setting('llms_txt_generator_settings', 'llms_txt_generator_include_urls');
+        register_setting('llms_txt_generator_settings', 'llms_txt_generator_exclude_urls');
+
+        register_setting('llms_txt_generator_uninstall_settings', 'llms_txt_generator_keep_settings');
+    }
+
+    public function handle_generate_llms_txt() {
+        // 権限チェック
+        if (!current_user_can('manage_options')) {
+            wp_die(__('この操作を実行する権限がありません。', 'llms-txt-full-txt-generator'));
+        }
+
+        // nonceチェック
+        if (!isset($_POST['llms_nonce']) || !wp_verify_nonce($_POST['llms_nonce'], 'llms_generate_action')) {
+            wp_die(__('セキュリティチェックに失敗しました。', 'llms-txt-full-txt-generator'));
+        }
+
+        // llms.txtとllms-full.txtファイルの生成処理
+        $this->generate_llms_txt_files();
+
+        // リダイレクト
+        wp_redirect(admin_url('options-general.php?page=llms-txt-generator&tab=generate&generated=1'));
+        exit;
+    }
+
+    /**
+     * llms.txtとllms-full.txtファイルを生成する
+     */
+    private function generate_llms_txt_files() {
+        $root_dir = ABSPATH;
+        $llms_txt_path = $root_dir . 'llms.txt';
+        $llms_full_txt_path = $root_dir . 'llms-full.txt';
+
+        // 設定の取得
+        $selected_post_types = get_option('llms_txt_generator_post_types', array('post', 'page'));
+        $custom_header = get_option('llms_txt_generator_custom_header', '');
+        $include_excerpt = get_option('llms_txt_generator_include_excerpt', false);
+        $include_urls = get_option('llms_txt_generator_include_urls', '');
+        $exclude_urls = get_option('llms_txt_generator_exclude_urls', '');
+
+        // 含めるURLと除外するURLの配列を作成
+        $include_urls_array = !empty($include_urls) ? array_map('trim', explode("\n", $include_urls)) : array();
+        $exclude_urls_array = !empty($exclude_urls) ? array_map('trim', explode("\n", $exclude_urls)) : array();
+
+        // ファイルの内容
+        $llms_txt_content = '';
+        $llms_full_txt_content = '';
+
+        // カスタムヘッダーの追加
+        if (!empty($custom_header)) {
+            $llms_txt_content .= $custom_header . "\n\n";
+            $llms_full_txt_content .= $custom_header . "\n\n";
+        }
+
+        // 投稿を取得
+        $args = array(
+            'post_type' => $selected_post_types,
+            'post_status' => 'publish',
+            'posts_per_page' => -1,
+        );
+
+        $posts = get_posts($args);
+
+        foreach ($posts as $post) {
+            $permalink = get_permalink($post->ID);
+
+            // URLフィルタリング
+            if (!$this->is_url_allowed($permalink, $include_urls_array, $exclude_urls_array)) {
+                continue;
+            }
+
+            // llms.txtにはURLのみ追加
+            $llms_txt_content .= $permalink . "\n";
+
+            // llms-full.txtにはURLと抜粋（設定されている場合）
+            $llms_full_txt_content .= $permalink . "\n";
+
+            if ($include_excerpt) {
+                $excerpt = !empty($post->post_excerpt) ? $post->post_excerpt : wp_trim_words($post->post_content, 55, '...');
+                if (!empty($excerpt)) {
+                    $llms_full_txt_content .= $excerpt . "\n";
+                }
+            }
+
+            $llms_full_txt_content .= "\n";
+        }
+
+        // ファイルの書き込み
+        file_put_contents($llms_txt_path, $llms_txt_content);
+        file_put_contents($llms_full_txt_path, $llms_full_txt_content);
+
+        return true;
+    }
+
+    /**
+     * URLがフィルター設定に基づいて許可されているかをチェック
+     */
+    private function is_url_allowed($url, $include_urls_array, $exclude_urls_array) {
+        // URLの正規化（末尾のスラッシュを削除）
+        $url = rtrim($url, '/');
+
+        // デバッグモードが有効な場合、ログを記録
+        $debug_mode = get_option('llms_txt_generator_debug_mode', false);
+        if ($debug_mode) {
+            $log_dir = plugin_dir_path(__FILE__) . 'logs/';
+            if (!file_exists($log_dir)) {
+                mkdir($log_dir, 0755, true);
+            }
+            $log_file = $log_dir . 'url_debug.log';
+            file_put_contents($log_file, date('[Y-m-d H:i:s] ') . "Processing URL: {$url}\n", FILE_APPEND);
+        }
+
+        // 除外URLのチェック
+        if (!empty($exclude_urls_array)) {
+            foreach ($exclude_urls_array as $pattern) {
+                $pattern = rtrim(trim($pattern), '/');
+                if (empty($pattern)) continue;
+
+                $regex = $this->wildcard_to_regex($pattern);
+                if (preg_match($regex, $url)) {
+                    if ($debug_mode) {
+                        file_put_contents($log_file, date('[Y-m-d H:i:s] ') . "URL excluded by pattern: {$pattern}\n", FILE_APPEND);
+                    }
+                    return false;
+                }
+            }
+        }
+
+        // 含めるURLのチェック（設定がある場合のみ）
+        if (!empty($include_urls_array)) {
+            $included = false;
+            foreach ($include_urls_array as $pattern) {
+                $pattern = rtrim(trim($pattern), '/');
+                if (empty($pattern)) continue;
+
+                $regex = $this->wildcard_to_regex($pattern);
+                if (preg_match($regex, $url)) {
+                    $included = true;
+                    if ($debug_mode) {
+                        file_put_contents($log_file, date('[Y-m-d H:i:s] ') . "URL included by pattern: {$pattern}\n", FILE_APPEND);
+                    }
+                    break;
+                }
+            }
+
+            if (!$included) {
+                if ($debug_mode) {
+                    file_put_contents($log_file, date('[Y-m-d H:i:s] ') . "URL not included in any pattern\n", FILE_APPEND);
+                }
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * ワイルドカードパターンを正規表現に変換
+     */
+    private function wildcard_to_regex($pattern) {
+        $pattern = preg_quote($pattern, '/');
+        $pattern = str_replace('\*', '.*', $pattern);
+        return '/^' . $pattern . '$/i';
     }
 }
 

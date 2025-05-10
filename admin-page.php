@@ -1,5 +1,22 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+// 管理画面でない場合は処理しない
+if (!is_admin()) {
+    return;
+}
+
+// 必要なWordPress管理画面関数を確認
+if (!function_exists('do_settings_sections')) {
+    require_once(ABSPATH . 'wp-admin/includes/template.php');
+}
+
+// admin-page.phpの内容は、llms-txt-full-txt-generator.phpのadmin_page()メソッド内で
+// includeされるため、WordPress管理画面の初期化後に読み込まれることになります。
+// そのため、このファイルではHTMLを直接出力せず、関数として定義します。
+
+// この関数はすでにllms-txt-full-txt-generator.phpのadmin_page()メソッド内で呼び出されています
+function llms_txt_generator_admin_page_content() {
 ?>
 <div class="wrap">
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
@@ -14,7 +31,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         <form method="post" action="options.php">
             <?php
             settings_fields('llms_txt_generator_settings');
-            do_settings_sections('llms_txt_generator_settings');
             ?>
 
             <h2><?php esc_html_e('基本設定', 'llms-txt-full-txt-generator'); ?></h2>
@@ -124,6 +140,16 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
     <div id="generate-tab" class="tab-content">
         <h2><?php esc_html_e('LLMS.txtファイルを生成', 'llms-txt-full-txt-generator'); ?></h2>
+
+        <?php
+        // ファイル生成後のメッセージを表示
+        if (isset($_GET['generated']) && $_GET['generated'] == 1) {
+            echo '<div class="notice notice-success is-dismissible"><p>';
+            esc_html_e('LLMS.txtファイルと LLMS-Full.txtファイルが正常に生成されました。', 'llms-txt-full-txt-generator');
+            echo '</p></div>';
+        }
+        ?>
+
         <p><?php esc_html_e('下のボタンをクリックすると、現在の設定に基づいてllms.txtとllms-full.txtファイルを生成します。', 'llms-txt-full-txt-generator'); ?></p>
 
         <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
@@ -181,9 +207,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
             <p><?php esc_html_e('このプラグインは元々、rankthによって開発されたLLMs-Full.txt and LLMs.txt Generatorをベースに、いつもの匠によって機能拡張されたものです。', 'llms-txt-full-txt-generator'); ?></p>
             <?php
             /* translators: %s: URL to the GitHub repository */
-            echo '<p>' . sprintf(esc_html__('ソースコードは<a href="%s" target="_blank">GitHub</a>で公開されています。', 'llms-txt-full-txt-generator'), esc_url('https://github.com/itsumonotakumi/llms-txt-full-txt-generator')) . '</p>';
+            echo '<p>' . sprintf(__('ソースコードは<a href="%s" target="_blank">GitHub</a>で公開されています。', 'llms-txt-full-txt-generator'), esc_url('https://github.com/itsumonotakumi/llms-txt-full-txt-generator')) . '</p>';
             /* translators: %s: URL to the original plugin on WordPress.org */
-            echo '<p>' . sprintf(esc_html__('元のプラグイン: <a href="%s" target="_blank">LLMs-Full.txt and LLMs.txt Generator</a>', 'llms-txt-full-txt-generator'), esc_url('https://wordpress.org/plugins/llms-full-txt-generator/')) . '</p>';
+            echo '<p>' . sprintf(__('元のプラグイン: <a href="%s" target="_blank">LLMs-Full.txt and LLMs.txt Generator</a>', 'llms-txt-full-txt-generator'), esc_url('https://wordpress.org/plugins/llms-full-txt-generator/')) . '</p>';
             ?>
 
             <h4><?php esc_html_e('免責事項', 'llms-txt-full-txt-generator'); ?></h4>
@@ -193,15 +219,15 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
             <ul>
                 <?php
                 /* translators: %1$s: Email address for mailto link, %2$s: Email address for display */
-                echo '<li>' . sprintf(esc_html__('メールアドレス: <a href="mailto:%1$s">%2$s</a>', 'llms-txt-full-txt-generator'), esc_attr('llms-txt@takulog.info'), esc_html('llms-txt@takulog.info')) . '</li>';
+                echo '<li>' . sprintf(__('メールアドレス: <a href="mailto:%1$s">%2$s</a>', 'llms-txt-full-txt-generator'), esc_attr('llms-txt@takulog.info'), esc_html('llms-txt@takulog.info')) . '</li>';
                 /* translators: %1$s: Homepage URL for href, %2$s: Homepage URL for display */
-                echo '<li>' . sprintf(esc_html__('ホームページ: <a href="%1$s" target="_blank">%2$s</a>', 'llms-txt-full-txt-generator'), esc_url('https://mobile-cheap.jp'), esc_html('https://mobile-cheap.jp')) . '</li>';
+                echo '<li>' . sprintf(__('ホームページ: <a href="%1$s" target="_blank">%2$s</a>', 'llms-txt-full-txt-generator'), esc_url('https://mobile-cheap.jp'), esc_html('https://mobile-cheap.jp')) . '</li>';
                 /* translators: %s: X (Twitter) profile URL */
-                echo '<li>' . sprintf(esc_html__('X (Twitter): <a href="%1$s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), esc_url('https://x.com/itsumonotakumi')) . '</li>';
+                echo '<li>' . sprintf(__('X (Twitter): <a href="%1$s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), esc_url('https://x.com/itsumonotakumi')) . '</li>';
                 /* translators: %s: Threads profile URL */
-                echo '<li>' . sprintf(esc_html__('Threads: <a href="%1$s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), esc_url('https://www.threads.net/@itsumonotakumi')) . '</li>';
+                echo '<li>' . sprintf(__('Threads: <a href="%1$s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), esc_url('https://www.threads.net/@itsumonotakumi')) . '</li>';
                 /* translators: %s: YouTube channel URL */
-                echo '<li>' . sprintf(esc_html__('YouTube: <a href="%1$s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), esc_url('https://www.youtube.com/@itsumonotakumi')) . '</li>';
+                echo '<li>' . sprintf(__('YouTube: <a href="%1$s" target="_blank">@itsumonotakumi</a>', 'llms-txt-full-txt-generator'), esc_url('https://www.youtube.com/@itsumonotakumi')) . '</li>';
                 ?>
             </ul>
         </div>
@@ -250,7 +276,7 @@ https://example.com/page2
 
         <div class="card">
             <h3><?php esc_html_e('高度な設定', 'llms-txt-full-txt-generator'); ?></h3>
-            
+
             <div class="advanced-setting">
                 <h4><?php esc_html_e('アンインストール時の設定保持', 'llms-txt-full-txt-generator'); ?></h4>
                 <form method="post" action="options.php">
@@ -302,39 +328,53 @@ https://example.com/page2
 <script>
 jQuery(document).ready(function($) {
     $('.tab-content').hide();
-    
-    $('#settings-tab').show();
-    
-    function initTabs() {
-        if (window.location.hash && $(window.location.hash).length) {
-            var hash = window.location.hash;
-            $('.nav-tab').removeClass('nav-tab-active');
-            $('a[href="' + hash + '"]').addClass('nav-tab-active');
-            $('.tab-content').hide();
-            $(hash).show();
-        } else {
-            $('#settings-tab-link').addClass('nav-tab-active');
-            $('#settings-tab').show();
-        }
+
+    // URLのハッシュからタブを取得
+    var activeTab = window.location.hash;
+
+    // 引数からtabパラメータを取得
+    var urlParams = new URLSearchParams(window.location.search);
+    var tabParam = urlParams.get('tab');
+
+    // URLパラメータのtabがある場合は優先
+    if (tabParam) {
+        activeTab = '#' + tabParam + '-tab';
     }
-    
-    initTabs();
-    
+
+    // 有効なタブがなければデフォルトを表示
+    if (!activeTab || !$(activeTab).length) {
+        activeTab = '#settings-tab';
+    }
+
+    // 対応するタブを表示
+    $(activeTab).show();
+    $('a[href="' + activeTab + '"]').addClass('nav-tab-active');
+
+    // タブクリック時の処理
     $('.nav-tab').on('click', function(e) {
         e.preventDefault();
-        
+
         $('.nav-tab').removeClass('nav-tab-active');
         $(this).addClass('nav-tab-active');
-        
+
         var targetTab = $(this).attr('href');
         $('.tab-content').hide();
         $(targetTab).show();
-        
-        if (history.replaceState) {
-            history.replaceState(null, null, targetTab);
+
+        // タブ情報をURLパラメータとして保持
+        var baseUrl = window.location.href.split('#')[0];
+        var tabName = targetTab.replace('#', '').replace('-tab', '');
+
+        // 既存のクエリパラメータを維持
+        var params = new URLSearchParams(window.location.search);
+        params.set('tab', tabName);
+
+        // URLを更新（リロードなし）
+        if (history.pushState) {
+            history.pushState(null, null, baseUrl.split('?')[0] + '?' + params.toString() + targetTab);
         }
     });
-    
+
     function toggleScheduleFrequency() {
         if ($('input[name="llms_txt_generator_schedule_enabled"]').is(':checked')) {
             $('#schedule-frequency-row').show();
@@ -342,8 +382,11 @@ jQuery(document).ready(function($) {
             $('#schedule-frequency-row').hide();
         }
     }
-    
+
     toggleScheduleFrequency();
     $('input[name="llms_txt_generator_schedule_enabled"]').change(toggleScheduleFrequency);
 });
 </script>
+<?php
+}
+?>
