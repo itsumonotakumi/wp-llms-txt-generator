@@ -2,6 +2,23 @@
 
 This plugin is a fork of [LLMs-Full.txt and LLMs.txt Generator](https://wordpress.org/plugins/llms-full-txt-generator/).
 
+## [2.0] - 2025-05-10
+
+### New Features
+- Changed plugin name to "LLMS TXT and Full TXT Generator"
+- Improved UI for better user experience
+- Performance optimization
+
+### Bug Fixes
+- Resolved character encoding issues in some environments
+- Improved URL processing reliability
+- Enhanced error handling
+
+### Code Quality Improvements
+- Code refactoring and optimization
+- Security enhancements
+- Comprehensive documentation
+
 ## [1.9.2] - 2025-03-22
 
 ### New Features
