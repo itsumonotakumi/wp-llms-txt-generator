@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: LLMS TXT and Full TXT Generator
- * Plugin URI: https://github.com/itsumonotakumi/llms-txt-full-txt-generator
+ * Plugin Name: WP LLMS TXT Generator
+ * Plugin URI: https://github.com/itsumonotakumi/wp-llms-txt-generator
  * Description: Generate llms.txt and llms-full.txt files from your WordPress content for LLM training.
  * Version: 2.0
  * Requires at least: 5.0
@@ -37,12 +37,15 @@ class LLMS_TXT_Generator {
 
         // admin-post.phpで処理するアクションフックを追加
         add_action('admin_post_generate_llms_txt', array($this, 'handle_generate_llms_txt'));
+
+        // llms.txtファイルへのリクエストをフック
+        add_action('init', array($this, 'handle_view_llms_txt_files'));
     }
 
     public function add_admin_menu() {
         add_options_page(
-            __('LLMS.txt Generator Settings', 'llms-txt-full-txt-generator'),
-            __('LLMS.txt Generator', 'llms-txt-full-txt-generator'),
+            __('WP LLMS TXT Generator Settings', 'llms-txt-full-txt-generator'),
+            __('WP LLMS TXT Generator', 'llms-txt-full-txt-generator'),
             'manage_options',
             'llms-txt-generator',
             array($this, 'admin_page')
@@ -108,6 +111,8 @@ class LLMS_TXT_Generator {
      * llms.txtとllms-full.txtファイルを生成する
      */
     private function generate_llms_txt_files() {
+        global $wp_rewrite;
+
         $root_dir = ABSPATH;
         $llms_txt_path = $root_dir . 'llms.txt';
         $llms_full_txt_path = $root_dir . 'llms-full.txt';
@@ -127,50 +132,121 @@ class LLMS_TXT_Generator {
         $llms_txt_content = '';
         $llms_full_txt_content = '';
 
+        // UTF-8宣言
+        $utf8_declaration = "# Encoding: UTF-8\n";
+        $llms_txt_content .= $utf8_declaration;
+        $llms_full_txt_content .= $utf8_declaration;
+
         // カスタムヘッダーの追加
         if (!empty($custom_header)) {
+            $custom_header = $this->ensure_utf8($custom_header);
             $llms_txt_content .= $custom_header . "\n\n";
             $llms_full_txt_content .= $custom_header . "\n\n";
         }
 
-        // 投稿を取得
-        $args = array(
-            'post_type' => $selected_post_types,
-            'post_status' => 'publish',
-            'posts_per_page' => -1,
-        );
+        // 選択された各投稿タイプについて処理
+        foreach ($selected_post_types as $post_type) {
+            $post_type_obj = get_post_type_object($post_type);
+            $post_type_name = $post_type_obj ? $post_type_obj->labels->name : $post_type;
 
-        $posts = get_posts($args);
+            // 投稿タイプの見出しを追加
+            $llms_txt_content .= "# " . $post_type_name . "\n\n";
+            $llms_full_txt_content .= "# " . $post_type_name . "\n\n";
 
-        foreach ($posts as $post) {
-            $permalink = get_permalink($post->ID);
+            // 投稿を取得
+            $args = array(
+                'post_type' => $post_type,
+                'post_status' => 'publish',
+                'posts_per_page' => -1,
+                'orderby' => 'date',
+                'order' => 'DESC',
+            );
 
-            // URLフィルタリング
-            if (!$this->is_url_allowed($permalink, $include_urls_array, $exclude_urls_array)) {
-                continue;
-            }
+            $query = new WP_Query($args);
 
-            // llms.txtにはURLのみ追加
-            $llms_txt_content .= $permalink . "\n";
+            if ($query->have_posts()) {
+                while ($query->have_posts()) {
+                    $query->the_post();
 
-            // llms-full.txtにはURLと抜粋（設定されている場合）
-            $llms_full_txt_content .= $permalink . "\n";
+                    $post_id = get_the_ID();
+                    $permalink = get_permalink($post_id);
+                    $title = get_the_title();
+                    $content = get_the_content();
+                    $excerpt = has_excerpt() ? get_the_excerpt() : wp_trim_words($content, 55, '...');
 
-            if ($include_excerpt) {
-                $excerpt = !empty($post->post_excerpt) ? $post->post_excerpt : wp_trim_words($post->post_content, 55, '...');
-                if (!empty($excerpt)) {
-                    $llms_full_txt_content .= $excerpt . "\n";
+                    // UTF-8エンコーディングを保証
+                    $permalink = $this->ensure_utf8($permalink);
+                    $title = $this->ensure_utf8($title);
+                    $content = $this->ensure_utf8($content);
+                    $excerpt = $this->ensure_utf8($excerpt);
+
+                    // URLフィルタリング
+                    if (!$this->is_url_allowed($permalink, $include_urls_array, $exclude_urls_array)) {
+                        continue;
+                    }
+
+                    // llms.txtにはURLのみ追加
+                    $llms_txt_content .= $permalink . "\n";
+
+                    // llms-full.txtにはURLとコンテンツを追加
+                    $llms_full_txt_content .= $title . "\n";
+                    $llms_full_txt_content .= $permalink . "\n";
+
+                    if ($include_excerpt) {
+                        $llms_full_txt_content .= $excerpt . "\n\n";
+                    } else {
+                        // 本文のHTMLタグを除去して追加
+                        $content = wp_strip_all_tags($content);
+                        $content = str_replace(array("\r\n", "\r", "\n"), "\n", $content);
+                        $content = preg_replace("/\n\s+\n/", "\n\n", $content);
+                        $content = preg_replace("/\n{3,}/", "\n\n", $content);
+                        $llms_full_txt_content .= $content . "\n\n";
+                    }
                 }
             }
 
+            wp_reset_postdata();
+
+            // 投稿タイプ間の区切り
+            $llms_txt_content .= "\n";
             $llms_full_txt_content .= "\n";
         }
 
-        // ファイルの書き込み
-        file_put_contents($llms_txt_path, $llms_txt_content);
-        file_put_contents($llms_full_txt_path, $llms_full_txt_content);
+        // ファイルの書き込み - UTF-8でエンコード
+        $bom = chr(239) . chr(187) . chr(191); // UTF-8 BOM
+        file_put_contents($llms_txt_path, $bom . $llms_txt_content);
+        file_put_contents($llms_full_txt_path, $bom . $llms_full_txt_content);
 
         return true;
+    }
+
+    /**
+     * 文字列がUTF-8エンコーディングであることを確認
+     */
+    private function ensure_utf8($str) {
+        // 文字列がnullまたは空の場合は空文字を返す
+        if (empty($str)) {
+            return '';
+        }
+
+        // 現在のエンコーディングを検出
+        $encoding = mb_detect_encoding($str, 'UTF-8, ISO-8859-1, EUC-JP, SJIS, GB2312, BIG5', true);
+
+        // エンコーディングが検出できない場合はUTF-8と仮定
+        if ($encoding === false) {
+            $encoding = 'UTF-8';
+        }
+
+        // UTF-8でない場合は変換
+        if ($encoding !== 'UTF-8') {
+            $str = mb_convert_encoding($str, 'UTF-8', $encoding);
+        }
+
+        // BOMがあれば削除
+        $bom = pack('H*', 'EFBBBF');
+        $str = preg_replace("/^$bom/", '', $str);
+
+        return $str;
     }
 
     /**
@@ -242,6 +318,32 @@ class LLMS_TXT_Generator {
         $pattern = preg_quote($pattern, '/');
         $pattern = str_replace('\*', '.*', $pattern);
         return '/^' . $pattern . '$/i';
+    }
+
+    /**
+     * llms.txtファイルを表示するためのリクエストを処理
+     */
+    public function handle_view_llms_txt_files() {
+        // llms.txt または llms-full.txt へのリクエストかどうかを確認
+        $request_uri = $_SERVER['REQUEST_URI'];
+
+        if (preg_match('/\/llms(-full)?\.txt$/', $request_uri, $matches)) {
+            $is_full = !empty($matches[1]);
+            $file_path = ABSPATH . ($is_full ? 'llms-full.txt' : 'llms.txt');
+
+            if (file_exists($file_path)) {
+                // キャッシュを無効化
+                nocache_headers();
+
+                // 適切なヘッダーを送信
+                header('Content-Type: text/plain; charset=UTF-8');
+                header('Content-Disposition: inline; filename=' . basename($file_path));
+
+                // ファイルを出力して終了
+                readfile($file_path);
+                exit;
+            }
+        }
     }
 }
 

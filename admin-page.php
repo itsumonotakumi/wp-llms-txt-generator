@@ -75,13 +75,6 @@ function llms_txt_generator_admin_page_content() {
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php esc_html_e('デバッグモード', 'llms-txt-full-txt-generator'); ?></th>
-                    <td>
-                        <input type="checkbox" name="llms_txt_generator_debug_mode" value="1" <?php checked(1, get_option('llms_txt_generator_debug_mode', false), true); ?> />
-                        <p class="description"><?php esc_html_e('有効にすると、URLフィルタリングに関する詳細なログが生成されます。問題が発生した場合に役立ちます。', 'llms-txt-full-txt-generator'); ?></p>
-                    </td>
-                </tr>
-                <tr valign="top">
                     <th scope="row"><?php esc_html_e('定期的に自動生成', 'llms-txt-full-txt-generator'); ?></th>
                     <td>
                         <input type="checkbox" name="llms_txt_generator_schedule_enabled" value="1" <?php checked(1, get_option('llms_txt_generator_schedule_enabled', false), true); ?> />
@@ -139,7 +132,7 @@ function llms_txt_generator_admin_page_content() {
     </div>
 
     <div id="generate-tab" class="tab-content">
-        <h2><?php esc_html_e('LLMS.txtファイルを生成', 'llms-txt-full-txt-generator'); ?></h2>
+        <h2><?php esc_html_e('WP LLMS TXT Generator ファイルを生成', 'llms-txt-full-txt-generator'); ?></h2>
 
         <?php
         // ファイル生成後のメッセージを表示
@@ -155,7 +148,7 @@ function llms_txt_generator_admin_page_content() {
         <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
             <?php wp_nonce_field('llms_generate_action', 'llms_nonce'); ?>
             <input type="hidden" name="action" value="generate_llms_txt">
-            <input type="submit" name="generate_llms_txt" class="button button-primary" value="<?php echo esc_attr__('LLMS.txtファイルを生成', 'llms-txt-full-txt-generator'); ?>">
+            <input type="submit" name="generate_llms_txt" class="button button-primary" value="<?php echo esc_attr__('WP LLMS TXT Generator ファイルを生成', 'llms-txt-full-txt-generator'); ?>">
         </form>
 
         <div class="llms-file-status" style="margin-top: 20px;">
@@ -207,7 +200,7 @@ function llms_txt_generator_admin_page_content() {
             <p><?php esc_html_e('このプラグインは元々、rankthによって開発されたLLMs-Full.txt and LLMs.txt Generatorをベースに、いつもの匠によって機能拡張されたものです。', 'llms-txt-full-txt-generator'); ?></p>
             <?php
             /* translators: %s: URL to the GitHub repository */
-            echo '<p>' . sprintf(__('ソースコードは<a href="%s" target="_blank">GitHub</a>で公開されています。', 'llms-txt-full-txt-generator'), esc_url('https://github.com/itsumonotakumi/llms-txt-full-txt-generator')) . '</p>';
+            echo '<p>' . sprintf(__('ソースコードは<a href="%s" target="_blank">GitHub</a>で公開されています。', 'llms-txt-full-txt-generator'), esc_url('https://github.com/itsumonotakumi/wp-llms-txt-generator')) . '</p>';
             /* translators: %s: URL to the original plugin on WordPress.org */
             echo '<p>' . sprintf(__('元のプラグイン: <a href="%s" target="_blank">LLMs-Full.txt and LLMs.txt Generator</a>', 'llms-txt-full-txt-generator'), esc_url('https://wordpress.org/plugins/llms-full-txt-generator/')) . '</p>';
             ?>
@@ -264,14 +257,33 @@ https://example.com/page2
 
         <div class="card">
             <h3><?php esc_html_e('トラブルシューティング', 'llms-txt-full-txt-generator'); ?></h3>
+
             <p><?php esc_html_e('URLが正しく除外されない場合は、以下の点を確認してください：', 'llms-txt-full-txt-generator'); ?></p>
             <ol>
                 <li><?php esc_html_e('デバッグモードを有効にして、URL処理のログを確認', 'llms-txt-full-txt-generator'); ?></li>
                 <li><?php esc_html_e('URLの形式が正しいか（絶対URLと相対URL）', 'llms-txt-full-txt-generator'); ?></li>
                 <li><?php esc_html_e('ワイルドカードの使用方法が適切か', 'llms-txt-full-txt-generator'); ?></li>
             </ol>
+
+            <div class="troubleshooting-form">
+                <h4><?php esc_html_e('デバッグ設定', 'llms-txt-full-txt-generator'); ?></h4>
+                <form method="post" action="options.php">
+                    <?php settings_fields('llms_txt_generator_settings'); ?>
+                    <table class="form-table">
+                        <tr valign="top">
+                            <th scope="row"><?php esc_html_e('デバッグモード', 'llms-txt-full-txt-generator'); ?></th>
+                            <td>
+                                <input type="checkbox" name="llms_txt_generator_debug_mode" value="1" <?php checked(1, get_option('llms_txt_generator_debug_mode', false), true); ?> />
+                                <p class="description"><?php esc_html_e('有効にすると、URLフィルタリングに関する詳細なログが生成されます。問題が発生した場合に役立ちます。', 'llms-txt-full-txt-generator'); ?></p>
+                            </td>
+                        </tr>
+                    </table>
+                    <?php submit_button(__('デバッグ設定を保存', 'llms-txt-full-txt-generator')); ?>
+                </form>
+            </div>
+
             <p><?php esc_html_e('デバッグログは以下の場所に保存されます：', 'llms-txt-full-txt-generator'); ?></p>
-            <code>wp-content/plugins/llms-txt-full-txt-generator/logs/url_debug.log</code>
+            <div class="debug-log-path">wp-content/plugins/llms-txt-full-txt-generator/logs/url_debug.log</div>
         </div>
 
         <div class="card">
@@ -322,6 +334,25 @@ https://example.com/page2
 
 #settings-tab {
     display: block;
+}
+
+.troubleshooting-form {
+    background-color: #f0f6fc;
+    border-left: 4px solid #2271b1;
+    padding: 15px;
+    margin: 20px 0;
+}
+
+.troubleshooting-form h4 {
+    margin-top: 0;
+}
+
+.debug-log-path {
+    background: #f0f0f1;
+    padding: 8px;
+    font-family: monospace;
+    display: inline-block;
+    margin-top: 5px;
 }
 </style>
 
