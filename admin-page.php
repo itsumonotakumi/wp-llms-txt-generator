@@ -132,7 +132,7 @@ function llms_txt_generator_admin_page_content() {
     </div>
 
     <div id="generate-tab" class="tab-content">
-        <h2><?php esc_html_e('LLMS.txtファイルを生成', 'llms-txt-full-txt-generator'); ?></h2>
+        <h2><?php esc_html_e('WP LLMS TXT Generator ファイルを生成', 'llms-txt-full-txt-generator'); ?></h2>
 
         <?php
         // ファイル生成後のメッセージを表示
@@ -148,7 +148,7 @@ function llms_txt_generator_admin_page_content() {
         <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
             <?php wp_nonce_field('llms_generate_action', 'llms_nonce'); ?>
             <input type="hidden" name="action" value="generate_llms_txt">
-            <input type="submit" name="generate_llms_txt" class="button button-primary" value="<?php echo esc_attr__('LLMS.txtファイルを生成', 'llms-txt-full-txt-generator'); ?>">
+            <input type="submit" name="generate_llms_txt" class="button button-primary" value="<?php echo esc_attr__('WP LLMS TXT Generator ファイルを生成', 'llms-txt-full-txt-generator'); ?>">
         </form>
 
         <div class="llms-file-status" style="margin-top: 20px;">
@@ -200,7 +200,7 @@ function llms_txt_generator_admin_page_content() {
             <p><?php esc_html_e('このプラグインは元々、rankthによって開発されたLLMs-Full.txt and LLMs.txt Generatorをベースに、いつもの匠によって機能拡張されたものです。', 'llms-txt-full-txt-generator'); ?></p>
             <?php
             /* translators: %s: URL to the GitHub repository */
-            echo '<p>' . sprintf(__('ソースコードは<a href="%s" target="_blank">GitHub</a>で公開されています。', 'llms-txt-full-txt-generator'), esc_url('https://github.com/itsumonotakumi/llms-txt-full-txt-generator')) . '</p>';
+            echo '<p>' . sprintf(__('ソースコードは<a href="%s" target="_blank">GitHub</a>で公開されています。', 'llms-txt-full-txt-generator'), esc_url('https://github.com/itsumonotakumi/wp-llms-txt-generator')) . '</p>';
             /* translators: %s: URL to the original plugin on WordPress.org */
             echo '<p>' . sprintf(__('元のプラグイン: <a href="%s" target="_blank">LLMs-Full.txt and LLMs.txt Generator</a>', 'llms-txt-full-txt-generator'), esc_url('https://wordpress.org/plugins/llms-full-txt-generator/')) . '</p>';
             ?>

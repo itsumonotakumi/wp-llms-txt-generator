@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: LLMS TXT and Full TXT Generator
- * Plugin URI: https://github.com/itsumonotakumi/llms-txt-full-txt-generator
+ * Plugin Name: WP LLMS TXT Generator
+ * Plugin URI: https://github.com/itsumonotakumi/wp-llms-txt-generator
  * Description: Generate llms.txt and llms-full.txt files from your WordPress content for LLM training.
  * Version: 2.0
  * Requires at least: 5.0
@@ -44,8 +44,8 @@ class LLMS_TXT_Generator {
 
     public function add_admin_menu() {
         add_options_page(
-            __('LLMS.txt Generator Settings', 'llms-txt-full-txt-generator'),
-            __('LLMS.txt Generator', 'llms-txt-full-txt-generator'),
+            __('WP LLMS TXT Generator Settings', 'llms-txt-full-txt-generator'),
+            __('WP LLMS TXT Generator', 'llms-txt-full-txt-generator'),
             'manage_options',
             'llms-txt-generator',
             array($this, 'admin_page')
