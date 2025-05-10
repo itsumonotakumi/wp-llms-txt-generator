@@ -75,13 +75,6 @@ function llms_txt_generator_admin_page_content() {
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php esc_html_e('デバッグモード', 'llms-txt-full-txt-generator'); ?></th>
-                    <td>
-                        <input type="checkbox" name="llms_txt_generator_debug_mode" value="1" <?php checked(1, get_option('llms_txt_generator_debug_mode', false), true); ?> />
-                        <p class="description"><?php esc_html_e('有効にすると、URLフィルタリングに関する詳細なログが生成されます。問題が発生した場合に役立ちます。', 'llms-txt-full-txt-generator'); ?></p>
-                    </td>
-                </tr>
-                <tr valign="top">
                     <th scope="row"><?php esc_html_e('定期的に自動生成', 'llms-txt-full-txt-generator'); ?></th>
                     <td>
                         <input type="checkbox" name="llms_txt_generator_schedule_enabled" value="1" <?php checked(1, get_option('llms_txt_generator_schedule_enabled', false), true); ?> />
@@ -264,14 +257,33 @@ https://example.com/page2
 
         <div class="card">
             <h3><?php esc_html_e('トラブルシューティング', 'llms-txt-full-txt-generator'); ?></h3>
+
             <p><?php esc_html_e('URLが正しく除外されない場合は、以下の点を確認してください：', 'llms-txt-full-txt-generator'); ?></p>
             <ol>
                 <li><?php esc_html_e('デバッグモードを有効にして、URL処理のログを確認', 'llms-txt-full-txt-generator'); ?></li>
                 <li><?php esc_html_e('URLの形式が正しいか（絶対URLと相対URL）', 'llms-txt-full-txt-generator'); ?></li>
                 <li><?php esc_html_e('ワイルドカードの使用方法が適切か', 'llms-txt-full-txt-generator'); ?></li>
             </ol>
+
+            <div class="troubleshooting-form">
+                <h4><?php esc_html_e('デバッグ設定', 'llms-txt-full-txt-generator'); ?></h4>
+                <form method="post" action="options.php">
+                    <?php settings_fields('llms_txt_generator_settings'); ?>
+                    <table class="form-table">
+                        <tr valign="top">
+                            <th scope="row"><?php esc_html_e('デバッグモード', 'llms-txt-full-txt-generator'); ?></th>
+                            <td>
+                                <input type="checkbox" name="llms_txt_generator_debug_mode" value="1" <?php checked(1, get_option('llms_txt_generator_debug_mode', false), true); ?> />
+                                <p class="description"><?php esc_html_e('有効にすると、URLフィルタリングに関する詳細なログが生成されます。問題が発生した場合に役立ちます。', 'llms-txt-full-txt-generator'); ?></p>
+                            </td>
+                        </tr>
+                    </table>
+                    <?php submit_button(__('デバッグ設定を保存', 'llms-txt-full-txt-generator')); ?>
+                </form>
+            </div>
+
             <p><?php esc_html_e('デバッグログは以下の場所に保存されます：', 'llms-txt-full-txt-generator'); ?></p>
-            <code>wp-content/plugins/llms-txt-full-txt-generator/logs/url_debug.log</code>
+            <div class="debug-log-path">wp-content/plugins/llms-txt-full-txt-generator/logs/url_debug.log</div>
         </div>
 
         <div class="card">
@@ -322,6 +334,25 @@ https://example.com/page2
 
 #settings-tab {
     display: block;
+}
+
+.troubleshooting-form {
+    background-color: #f0f6fc;
+    border-left: 4px solid #2271b1;
+    padding: 15px;
+    margin: 20px 0;
+}
+
+.troubleshooting-form h4 {
+    margin-top: 0;
+}
+
+.debug-log-path {
+    background: #f0f0f1;
+    padding: 8px;
+    font-family: monospace;
+    display: inline-block;
+    margin-top: 5px;
 }
 </style>
 
