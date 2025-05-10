@@ -37,6 +37,9 @@ class LLMS_TXT_Generator {
 
         // admin-post.phpで処理するアクションフックを追加
         add_action('admin_post_generate_llms_txt', array($this, 'handle_generate_llms_txt'));
+
+        // llms.txtファイルへのリクエストをフック
+        add_action('init', array($this, 'handle_view_llms_txt_files'));
     }
 
     public function add_admin_menu() {
@@ -129,8 +132,14 @@ class LLMS_TXT_Generator {
         $llms_txt_content = '';
         $llms_full_txt_content = '';
 
+        // UTF-8宣言
+        $utf8_declaration = "# Encoding: UTF-8\n";
+        $llms_txt_content .= $utf8_declaration;
+        $llms_full_txt_content .= $utf8_declaration;
+
         // カスタムヘッダーの追加
         if (!empty($custom_header)) {
+            $custom_header = $this->ensure_utf8($custom_header);
             $llms_txt_content .= $custom_header . "\n\n";
             $llms_full_txt_content .= $custom_header . "\n\n";
         }
@@ -204,8 +213,9 @@ class LLMS_TXT_Generator {
         }
 
         // ファイルの書き込み - UTF-8でエンコード
-        file_put_contents($llms_txt_path, $llms_txt_content);
-        file_put_contents($llms_full_txt_path, $llms_full_txt_content);
+        $bom = chr(239) . chr(187) . chr(191); // UTF-8 BOM
+        file_put_contents($llms_txt_path, $bom . $llms_txt_content);
+        file_put_contents($llms_full_txt_path, $bom . $llms_full_txt_content);
 
         return true;
     }
@@ -308,6 +318,32 @@ class LLMS_TXT_Generator {
         $pattern = preg_quote($pattern, '/');
         $pattern = str_replace('\*', '.*', $pattern);
         return '/^' . $pattern . '$/i';
+    }
+
+    /**
+     * llms.txtファイルを表示するためのリクエストを処理
+     */
+    public function handle_view_llms_txt_files() {
+        // llms.txt または llms-full.txt へのリクエストかどうかを確認
+        $request_uri = $_SERVER['REQUEST_URI'];
+
+        if (preg_match('/\/llms(-full)?\.txt$/', $request_uri, $matches)) {
+            $is_full = !empty($matches[1]);
+            $file_path = ABSPATH . ($is_full ? 'llms-full.txt' : 'llms.txt');
+
+            if (file_exists($file_path)) {
+                // キャッシュを無効化
+                nocache_headers();
+
+                // 適切なヘッダーを送信
+                header('Content-Type: text/plain; charset=UTF-8');
+                header('Content-Disposition: inline; filename=' . basename($file_path));
+
+                // ファイルを出力して終了
+                readfile($file_path);
+                exit;
+            }
+        }
     }
 }
 
