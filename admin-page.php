@@ -10,6 +10,13 @@ if (!is_admin()) {
 if (!function_exists('do_settings_sections')) {
     require_once(ABSPATH . 'wp-admin/includes/template.php');
 }
+
+// admin-page.phpの内容は、llms-txt-full-txt-generator.phpのadmin_page()メソッド内で
+// includeされるため、WordPress管理画面の初期化後に読み込まれることになります。
+// そのため、このファイルではHTMLを直接出力せず、関数として定義します。
+
+// この関数はすでにllms-txt-full-txt-generator.phpのadmin_page()メソッド内で呼び出されています
+function llms_txt_generator_admin_page_content() {
 ?>
 <div class="wrap">
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
@@ -356,3 +363,6 @@ jQuery(document).ready(function($) {
     $('input[name="llms_txt_generator_schedule_enabled"]').change(toggleScheduleFrequency);
 });
 </script>
+<?php
+}
+?>

@@ -23,7 +23,9 @@ if (is_admin()) {
     require_once(ABSPATH . 'wp-admin/includes/template.php');
 }
 
-require_once plugin_dir_path(__FILE__) . 'admin-page.php';
+// admin-page.phpを直接読み込まないように修正
+// 管理画面表示関数内で必要なときに読み込むようにする
+// require_once plugin_dir_path(__FILE__) . 'admin-page.php';
 
 class LLMS_TXT_Generator {
     public function __construct() {
@@ -32,6 +34,9 @@ class LLMS_TXT_Generator {
 
         // 設定を登録
         add_action('admin_init', array($this, 'register_settings'));
+
+        // admin-post.phpで処理するアクションフックを追加
+        add_action('admin_post_generate_llms_txt', array($this, 'handle_generate_llms_txt'));
     }
 
     public function add_admin_menu() {
@@ -53,7 +58,16 @@ class LLMS_TXT_Generator {
     }
 
     public function admin_page() {
-        include plugin_dir_path(__FILE__) . 'admin-page.php';
+        // 必要なWordPress管理画面関数を確認
+        if (!function_exists('do_settings_sections')) {
+            require_once(ABSPATH . 'wp-admin/includes/template.php');
+        }
+
+        // ここでadmin-page.phpをincludeする
+        include_once plugin_dir_path(__FILE__) . 'admin-page.php';
+
+        // 管理画面のHTMLを出力する関数を呼び出す
+        llms_txt_generator_admin_page_content();
     }
 
     public function register_settings() {
@@ -69,6 +83,13 @@ class LLMS_TXT_Generator {
         register_setting('llms_txt_generator_settings', 'llms_txt_generator_exclude_urls');
 
         register_setting('llms_txt_generator_uninstall_settings', 'llms_txt_generator_keep_settings');
+    }
+
+    public function handle_generate_llms_txt() {
+        // 将来的にLLMS.txtファイル生成処理を実装
+        // 今はリダイレクトのみ
+        wp_redirect(admin_url('options-general.php?page=llms-txt-generator&tab=generate'));
+        exit;
     }
 }
 
