@@ -11,6 +11,11 @@
         "phpcompatibility/phpcompatibility-wp": "^2.1",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
     },
+    "autoload": {
+        "psr-4": {
+            "ItsumonoTakumi\\WpLlmsTxtGenerator\\": "src/"
+        }
+    },
     "scripts": {
         "phpcs": "phpcs --standard=phpcs.xml.dist",
         "phpcbf": "phpcbf --standard=phpcs.xml.dist"
