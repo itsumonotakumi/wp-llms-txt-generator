@@ -9,7 +9,10 @@
     "require-dev": {
         "wp-coding-standards/wpcs": "^2.3",
         "phpcompatibility/phpcompatibility-wp": "^2.1",
-        "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "phpunit/phpunit": "^7.5",
+        "yoast/phpunit-polyfills": "^1.0",
+        "brain/monkey": "^2.6"
     },
     "autoload": {
         "psr-4": {
@@ -18,7 +21,9 @@
     },
     "scripts": {
         "phpcs": "phpcs --standard=phpcs.xml.dist",
-        "phpcbf": "phpcbf --standard=phpcs.xml.dist"
+        "phpcbf": "phpcbf --standard=phpcs.xml.dist",
+        "test": "phpunit --configuration phpunit.xml.dist",
+        "test:coverage": "phpunit --configuration phpunit.xml.dist --coverage-html coverage"
     },
     "config": {
         "allow-plugins": {
