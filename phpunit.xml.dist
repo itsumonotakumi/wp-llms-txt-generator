@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<phpunit
+	bootstrap="tests/phpunit/bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	>
+	<testsuites>
+		<testsuite name="wp-llms-txt-generator">
+			<directory prefix="test-" suffix=".php">./tests/phpunit/test-core</directory>
+			<directory prefix="test-" suffix=".php">./tests/phpunit/test-admin</directory>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist>
+			<directory suffix=".php">./src</directory>
+		</whitelist>
+	</filter>
+</phpunit>

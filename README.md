@@ -140,3 +140,27 @@ GPL v2（元のプラグイン「LLMs-Full.txt and LLMs.txt Generator v1.9」を
 - X (Twitter): [@itsumonotakumi](https://x.com/itsumonotakumi)
 - Threads: [@itsumonotakumi](https://www.threads.net/@itsumonotakumi)
 - YouTube: [@itsumonotakumi](https://www.youtube.com/@itsumonotakumi)
+
+## Testing
+
+To run the PHPUnit tests:
+
+1. Install the test dependencies:
+   ```
+   composer install
+   ```
+
+2. Set up the WordPress test environment:
+   ```
+   bin/install-wp-tests.sh wordpress_test root '' localhost latest
+   ```
+
+3. Run the tests:
+   ```
+   composer test
+   ```
+
+4. Generate code coverage report:
+   ```
+   composer test:coverage
+   ```
