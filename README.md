@@ -34,7 +34,7 @@ WordPressサイト内の投稿やページを自動的にllms.txtとllms-full.tx
 
 ## インストール方法
 
-1. [Releases](https://github.com/itsumonotakumi/llms-txt-full-txt-generator/releases)から最新のZIPファイルをダウンロード
+1. [Releases](https://github.com/itsumonotakumi/wp-llms-txt-generator/releases)から最新のZIPファイルをダウンロード
 2. WordPressの管理画面から「プラグイン」→「新規追加」→「プラグインのアップロード」を選択
 3. ダウンロードしたZIPファイルをアップロードしてインストール
 4. プラグインを有効化
@@ -92,7 +92,7 @@ URLが正しく除外されない場合は、以下の点を確認してくだ�
 2. URLの形式が正しいか（絶対URLと相対URL）
 3. ワイルドカードの使用方法が適切か
 
-デバッグログは `wp-content/plugins/llms-txt-full-txt-generator/logs/url_debug.log` に保存されます。
+デバッグログは `wp-content/plugins/wp-llms-txt-generator/logs/url_debug.log` に保存されます。
 
 ## オリジナルからの主な変更点
 
