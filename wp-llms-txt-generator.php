@@ -95,7 +95,7 @@ class LLMS_TXT_Generator {
         }
 
         // nonceチェック
-        if (!isset($_POST['llms_nonce']) || !wp_verify_nonce($_POST['llms_nonce'], 'llms_generate_action')) {
+        if (!isset($_POST['llms_nonce']) || !wp_verify_nonce(sanitize_text_field($_POST['llms_nonce']), 'llms_generate_action')) {
             wp_die(__('セキュリティチェックに失敗しました。', 'wp-llms-txt-generator'));
         }
 
@@ -113,9 +113,14 @@ class LLMS_TXT_Generator {
     private function generate_llms_txt_files() {
         global $wp_rewrite;
 
-        $root_dir = ABSPATH;
-        $llms_txt_path = $root_dir . 'llms.txt';
-        $llms_full_txt_path = $root_dir . 'llms-full.txt';
+        $root_dir = untrailingslashit(ABSPATH);
+        $llms_txt_path = wp_normalize_path($root_dir . '/llms.txt');
+        $llms_full_txt_path = wp_normalize_path($root_dir . '/llms-full.txt');
+        
+        $normalized_abspath = wp_normalize_path(untrailingslashit(ABSPATH));
+        if (strpos($llms_txt_path, $normalized_abspath) !== 0 || strpos($llms_full_txt_path, $normalized_abspath) !== 0) {
+            return false;
+        }
 
         // 設定の取得
         $selected_post_types = get_option('llms_txt_generator_post_types', array('post', 'page'));
@@ -214,10 +219,17 @@ class LLMS_TXT_Generator {
 
         // ファイルの書き込み - UTF-8でエンコード
         $bom = chr(239) . chr(187) . chr(191); // UTF-8 BOM
-        file_put_contents($llms_txt_path, $bom . $llms_txt_content);
-        file_put_contents($llms_full_txt_path, $bom . $llms_full_txt_content);
-
-        return true;
+        
+        $root_dir_writable = wp_is_writable($root_dir);
+        if (!$root_dir_writable) {
+            return false;
+        }
+        
+        // ファイルの書き込み
+        $llms_txt_result = file_put_contents($llms_txt_path, $bom . $llms_txt_content);
+        $llms_full_txt_result = file_put_contents($llms_full_txt_path, $bom . $llms_full_txt_content);
+        
+        return ($llms_txt_result !== false && $llms_full_txt_result !== false);
     }
 
     /**
@@ -261,10 +273,13 @@ class LLMS_TXT_Generator {
         if ($debug_mode) {
             $log_dir = plugin_dir_path(__FILE__) . 'logs/';
             if (!file_exists($log_dir)) {
-                mkdir($log_dir, 0755, true);
+                wp_mkdir_p($log_dir);
+                file_put_contents($log_dir . '.htaccess', "Order deny,allow\nDeny from all");
             }
             $log_file = $log_dir . 'url_debug.log';
-            file_put_contents($log_file, date('[Y-m-d H:i:s] ') . "Processing URL: {$url}\n", FILE_APPEND);
+            if (is_writable($log_dir)) {
+                file_put_contents($log_file, date('[Y-m-d H:i:s] ') . "Processing URL: " . esc_url($url) . "\n", FILE_APPEND);
+            }
         }
 
         // 除外URLのチェック
@@ -325,20 +340,24 @@ class LLMS_TXT_Generator {
      */
     public function handle_view_llms_txt_files() {
         // llms.txt または llms-full.txt へのリクエストかどうかを確認
-        $request_uri = $_SERVER['REQUEST_URI'];
+        $request_uri = isset($_SERVER['REQUEST_URI']) ? sanitize_text_field($_SERVER['REQUEST_URI']) : '';
 
         if (preg_match('/\/llms(-full)?\.txt$/', $request_uri, $matches)) {
             $is_full = !empty($matches[1]);
             $file_path = ABSPATH . ($is_full ? 'llms-full.txt' : 'llms.txt');
-
-            if (file_exists($file_path)) {
+            
+            $normalized_path = wp_normalize_path($file_path);
+            $normalized_abspath = wp_normalize_path(ABSPATH);
+            
+            if (file_exists($file_path) && strpos($normalized_path, $normalized_abspath) === 0) {
                 // キャッシュを無効化
                 nocache_headers();
-
+                
                 // 適切なヘッダーを送信
                 header('Content-Type: text/plain; charset=UTF-8');
+                header('Content-Length: ' . filesize($file_path));
                 header('Content-Disposition: inline; filename=' . basename($file_path));
-
+                
                 // ファイルを出力して終了
                 readfile($file_path);
                 exit;

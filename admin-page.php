@@ -129,7 +129,7 @@ function llms_txt_generator_admin_page_content() {
         <h2><?php esc_html_e('WP LLMS TXT Generator ファイルを生成', 'wp-llms-txt-generator'); ?></h2>
 
         <?php
-        if (isset($_GET['generated']) && $_GET['generated'] == 1) {
+        if (isset($_GET['generated']) && absint($_GET['generated']) === 1) {
             echo '<div class="notice notice-success is-dismissible"><p>';
             esc_html_e('LLMS.txtファイルと LLMS-Full.txtファイルが正常に生成されました。', 'wp-llms-txt-generator');
             echo '</p></div>';
@@ -147,21 +147,37 @@ function llms_txt_generator_admin_page_content() {
         <div class="llms-file-status" style="margin-top: 20px;">
             <h3><?php esc_html_e('ファイルステータス', 'wp-llms-txt-generator'); ?></h3>
             <?php
-            $root_dir = ABSPATH;
-            $llms_txt_path = $root_dir . '/llms.txt';
-            $llms_full_txt_path = $root_dir . '/llms-full.txt';
+            $root_dir = untrailingslashit(ABSPATH);
+            $llms_txt_path = wp_normalize_path($root_dir . '/llms.txt');
+            $llms_full_txt_path = wp_normalize_path($root_dir . '/llms-full.txt');
+            
+            $normalized_abspath = wp_normalize_path(untrailingslashit(ABSPATH));
+            if (strpos($llms_txt_path, $normalized_abspath) !== 0 || strpos($llms_full_txt_path, $normalized_abspath) !== 0) {
+                return;
+            }
 
             if (file_exists($llms_txt_path)) {
                 $llms_txt_url = home_url('/llms.txt');
                 $modified = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), filemtime($llms_txt_path));
                 echo '<div class="file-info">';
                 /* translators: %s: URL to the llms.txt file */
-                echo '<p>' . sprintf(esc_html__('LLMS.txtファイル: %s', 'wp-llms-txt-generator'), '<a href="' . esc_url($llms_txt_url) . '" target="_blank">' . esc_html($llms_txt_url) . '</a>') . '</p>';
+                printf(
+                    esc_html__('LLMS.txtファイル: %s', 'wp-llms-txt-generator'),
+                    '<a href="' . esc_url($llms_txt_url) . '" target="_blank">' . esc_html($llms_txt_url) . '</a>'
+                );
+                echo '<p>';
                 /* translators: %s: Last modified date and time of the file */
-                echo '<p>' . sprintf(esc_html__('最終更新日時: %s', 'wp-llms-txt-generator'), esc_html($modified)) . '</p>';
+                printf(
+                    esc_html__('最終更新日時: %s', 'wp-llms-txt-generator'),
+                    esc_html($modified)
+                );
+                echo '</p><p>';
                 /* translators: %s: File size in human readable format */
-                echo '<p>' . sprintf(esc_html__('ファイルサイズ: %s', 'wp-llms-txt-generator'), esc_html(size_format(filesize($llms_txt_path)))) . '</p>';
-                echo '</div>';
+                printf(
+                    esc_html__('ファイルサイズ: %s', 'wp-llms-txt-generator'),
+                    esc_html(size_format(filesize($llms_txt_path)))
+                );
+                echo '</p></div>';
             } else {
                 echo '<p>' . esc_html__('LLMS.txtファイルはまだ生成されていません。', 'wp-llms-txt-generator') . '</p>';
             }
@@ -171,12 +187,23 @@ function llms_txt_generator_admin_page_content() {
                 $modified = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), filemtime($llms_full_txt_path));
                 echo '<div class="file-info">';
                 /* translators: %s: URL to the llms-full.txt file */
-                echo '<p>' . sprintf(esc_html__('LLMS-Full.txtファイル: %s', 'wp-llms-txt-generator'), '<a href="' . esc_url($llms_full_txt_url) . '" target="_blank">' . esc_html($llms_full_txt_url) . '</a>') . '</p>';
+                printf(
+                    esc_html__('LLMS-Full.txtファイル: %s', 'wp-llms-txt-generator'),
+                    '<a href="' . esc_url($llms_full_txt_url) . '" target="_blank">' . esc_html($llms_full_txt_url) . '</a>'
+                );
+                echo '<p>';
                 /* translators: %s: Last modified date and time of the file */
-                echo '<p>' . sprintf(esc_html__('最終更新日時: %s', 'wp-llms-txt-generator'), esc_html($modified)) . '</p>';
+                printf(
+                    esc_html__('最終更新日時: %s', 'wp-llms-txt-generator'),
+                    esc_html($modified)
+                );
+                echo '</p><p>';
                 /* translators: %s: File size in human readable format */
-                echo '<p>' . sprintf(esc_html__('ファイルサイズ: %s', 'wp-llms-txt-generator'), esc_html(size_format(filesize($llms_full_txt_path)))) . '</p>';
-                echo '</div>';
+                printf(
+                    esc_html__('ファイルサイズ: %s', 'wp-llms-txt-generator'),
+                    esc_html(size_format(filesize($llms_full_txt_path)))
+                );
+                echo '</p></div>';
             } else {
                 echo '<p>' . esc_html__('LLMS-Full.txtファイルはまだ生成されていません。', 'wp-llms-txt-generator') . '</p>';
             }

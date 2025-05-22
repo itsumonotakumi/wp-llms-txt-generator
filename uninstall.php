@@ -45,14 +45,19 @@ if ($delete_all_options) {
 		// ログディレクトリが存在しない場合は作成
 		if (!file_exists($log_dir)) {
 			wp_mkdir_p($log_dir);
-			file_put_contents(trailingslashit($log_dir) . '.htaccess', "Order deny,allow\nDeny from all");
+			$htaccess_content = "Order deny,allow\nDeny from all";
+			if (is_writable($log_dir)) {
+				file_put_contents(trailingslashit($log_dir) . '.htaccess', $htaccess_content);
+			}
 		}
 		
 		$log_file = trailingslashit($log_dir) . 'debug.log';
 		$timestamp = gmdate('Y-m-d H:i:s');
 		$message = 'LLMS TXT Generator: アンインストール時に設定を保持しました。';
 		
-		file_put_contents($log_file, "[{$timestamp}] {$message}\n", FILE_APPEND);
+		if (is_writable($log_dir)) {
+			file_put_contents($log_file, "[{$timestamp}] " . sanitize_text_field($message) . "\n", FILE_APPEND);
+		}
 	}
 }
 
