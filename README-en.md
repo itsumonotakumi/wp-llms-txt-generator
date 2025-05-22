@@ -115,6 +115,23 @@ GPL v2 (based on the original plugin "LLMs-Full.txt and LLMs.txt Generator v1.9"
 - Blog: [Gadget Review Takumi](https://mobile-cheap.jp)
 - Original plugin developer: [rankth](https://profiles.wordpress.org/rankth/)
 
+### Development Environment Setup
+
+1. Install Composer dependencies:
+   ```
+   composer install
+   ```
+
+2. Run code style checks:
+   ```
+   composer phpcs
+   ```
+
+3. Automatically fix code style issues:
+   ```
+   composer phpcbf
+   ```
+
 ## Contact Information
 
 - Email: [llms-txt@takulog.info](mailto:llms-txt@takulog.info)

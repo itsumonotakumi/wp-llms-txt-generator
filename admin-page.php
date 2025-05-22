@@ -10,6 +10,14 @@ if (!function_exists('do_settings_sections')) {
 }
 
 
+/**
+ * Render the admin page content for the plugin
+ *
+ * Creates a tabbed interface with settings, generation, and help tabs.
+ *
+ * @since 1.0.0
+ * @return void
+ */
 function llms_txt_generator_admin_page_content() {
 ?>
 <div class="wrap">
