@@ -35,7 +35,7 @@ def test_plugin_installation():
             with page.expect_file_chooser() as fc_info:
                 page.click("#pluginzip")
             file_chooser = fc_info.value
-            file_chooser.set_files(os.path.abspath("../llms-txt-full-txt-generator.zip"))
+            file_chooser.set_files(os.path.abspath("../wp-llms-txt-generator.zip"))
             
             page.click("#install-plugin-submit")
             

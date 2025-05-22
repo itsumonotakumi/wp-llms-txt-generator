@@ -2,13 +2,13 @@
 /**
  * Plugin Name: WP LLMS TXT Generator
  * Plugin URI: https://github.com/itsumonotakumi/wp-llms-txt-generator
- * Description: Generate llms.txt and llms-full.txt files from your WordPress content for LLM training.
+ * Description: WordPressサイトのコンテンツをLLM学習用データとして出力するためのプラグイン
  * Version: 2.0
  * Requires at least: 5.0
  * Requires PHP: 7.0
  * Author: Itsumonotakumi
  * Author URI: https://mobile-cheap.jp
- * Text Domain: llms-txt-full-txt-generator
+ * Text Domain: wp-llms-txt-generator
  * Domain Path: /languages
  * License: GPL v2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -44,8 +44,8 @@ class LLMS_TXT_Generator {
 
     public function add_admin_menu() {
         add_options_page(
-            __('WP LLMS TXT Generator Settings', 'llms-txt-full-txt-generator'),
-            __('WP LLMS TXT Generator', 'llms-txt-full-txt-generator'),
+            __('WP LLMS TXT Generator Settings', 'wp-llms-txt-generator'),
+            __('WP LLMS TXT Generator', 'wp-llms-txt-generator'),
             'manage_options',
             'llms-txt-generator',
             array($this, 'admin_page')
@@ -54,7 +54,7 @@ class LLMS_TXT_Generator {
 
     public function load_textdomain() {
         load_plugin_textdomain(
-            'llms-txt-full-txt-generator',
+            'wp-llms-txt-generator',
             false,
             dirname(plugin_basename(__FILE__)) . '/languages/'
         );
@@ -91,12 +91,12 @@ class LLMS_TXT_Generator {
     public function handle_generate_llms_txt() {
         // 権限チェック
         if (!current_user_can('manage_options')) {
-            wp_die(__('この操作を実行する権限がありません。', 'llms-txt-full-txt-generator'));
+            wp_die(__('この操作を実行する権限がありません。', 'wp-llms-txt-generator'));
         }
 
         // nonceチェック
         if (!isset($_POST['llms_nonce']) || !wp_verify_nonce($_POST['llms_nonce'], 'llms_generate_action')) {
-            wp_die(__('セキュリティチェックに失敗しました。', 'llms-txt-full-txt-generator'));
+            wp_die(__('セキュリティチェックに失敗しました。', 'wp-llms-txt-generator'));
         }
 
         // llms.txtとllms-full.txtファイルの生成処理

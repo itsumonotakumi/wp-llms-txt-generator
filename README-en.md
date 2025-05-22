@@ -33,7 +33,7 @@ In addition to the original features, we've made numerous enhancements including
 
 ## Installation
 
-1. Download the latest ZIP file from [Releases](https://github.com/itsumonotakumi/llms-txt-full-txt-generator/releases)
+1. Download the latest ZIP file from [Releases](https://github.com/itsumonotakumi/wp-llms-txt-generator/releases)
 2. From WordPress admin panel, go to "Plugins" → "Add New" → "Upload Plugin"
 3. Upload the downloaded ZIP file and install
 4. Activate the plugin
@@ -91,7 +91,7 @@ If URLs are not being excluded correctly, check the following:
 2. Verify that the URL format is correct (absolute and relative URLs)
 3. Check if your wildcard usage is appropriate
 
-Debug logs are saved to `wp-content/plugins/llms-txt-full-txt-generator/logs/url_debug.log`.
+Debug logs are saved to `wp-content/plugins/wp-llms-txt-generator/logs/url_debug.log`.
 
 ## Main Changes from the Original
 

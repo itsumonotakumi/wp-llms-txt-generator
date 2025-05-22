@@ -74,7 +74,7 @@ llms.txtはURLと投稿タイトルのリストのみを含み、llms-full.txt�
 
 = URLが正しく除外されない場合はどうすればいいですか？ =
 
-デバッグモードを有効にして、URL処理のログを確認してください。ログは `wp-content/plugins/llms-txt-full-txt-generator/logs/url_debug.log` に保存されます。
+デバッグモードを有効にして、URL処理のログを確認してください。ログは `wp-content/plugins/wp-llms-txt-generator/logs/url_debug.log` に保存されます。
 
 = 自動更新と定期実行の違いは何ですか？ =
 
@@ -157,4 +157,4 @@ llms.txtはURLと投稿タイトルのリストのみを含み、llms-full.txt�
 
 == フィードバック & サポート ==
 
-このプラグインは[GitHub](https://github.com/itsumonotakumi/llms-txt-full-txt-generator)でオープンソースとして開発されています。バグ報告や機能リクエストはメールにてお問い合わせください。
+このプラグインは[GitHub](https://github.com/itsumonotakumi/wp-llms-txt-generator)でオープンソースとして開発されています。バグ報告や機能リクエストはメールにてお問い合わせください。
