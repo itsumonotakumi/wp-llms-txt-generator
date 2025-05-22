@@ -116,6 +116,23 @@ GPL v2（元のプラグイン「LLMs-Full.txt and LLMs.txt Generator v1.9」を
 - ブログ: [ガジェットレビューの匠](https://mobile-cheap.jp)
 - フォーク元プラグインの開発者: [rankth](https://profiles.wordpress.org/rankth/)
 
+### 開発環境のセットアップ
+
+1. Composerの依存関係をインストールします：
+   ```
+   composer install
+   ```
+
+2. コードスタイルチェックを実行します：
+   ```
+   composer phpcs
+   ```
+
+3. 自動的にコードスタイルを修正します：
+   ```
+   composer phpcbf
+   ```
+
 ## 連絡先情報
 
 - メールアドレス: [llms-txt@takulog.info](mailto:llms-txt@takulog.info)

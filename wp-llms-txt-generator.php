@@ -27,7 +27,23 @@ if (is_admin()) {
 // 管理画面表示関数内で必要なときに読み込むようにする
 // require_once plugin_dir_path(__FILE__) . 'admin-page.php';
 
+/**
+ * Main plugin class for WP LLMS TXT Generator
+ *
+ * This class handles the core functionality of the plugin including
+ * admin menu setup, file generation, and URL handling.
+ *
+ * @package LLMS_TXT_Generator
+ * @since 1.0.0
+ */
 class LLMS_TXT_Generator {
+    /**
+     * Constructor for the LLMS_TXT_Generator class
+     *
+     * Sets up all necessary hooks and actions for the plugin.
+     *
+     * @since 1.0.0
+     */
     public function __construct() {
         add_action('admin_menu', array($this, 'add_admin_menu'));
         add_action('plugins_loaded', array($this, 'load_textdomain'));
@@ -42,6 +58,14 @@ class LLMS_TXT_Generator {
         add_action('init', array($this, 'handle_view_llms_txt_files'));
     }
 
+    /**
+     * Add plugin menu item to WordPress admin menu
+     *
+     * Creates a settings page under the "Settings" menu in the WordPress admin.
+     *
+     * @since 1.0.0
+     * @return void
+     */
     public function add_admin_menu() {
         add_options_page(
             __('WP LLMS TXT Generator Settings', 'wp-llms-txt-generator'),
@@ -52,6 +76,14 @@ class LLMS_TXT_Generator {
         );
     }
 
+    /**
+     * Load plugin text domain for translations
+     *
+     * Ensures the plugin is translatable by loading the text domain.
+     *
+     * @since 1.0.0
+     * @return void
+     */
     public function load_textdomain() {
         load_plugin_textdomain(
             'wp-llms-txt-generator',
@@ -60,6 +92,14 @@ class LLMS_TXT_Generator {
         );
     }
 
+    /**
+     * Renders the admin settings page
+     *
+     * Includes the admin page template and calls the content rendering function.
+     *
+     * @since 1.0.0
+     * @return void
+     */
     public function admin_page() {
         // 必要なWordPress管理画面関数を確認
         if (!function_exists('do_settings_sections')) {
@@ -73,6 +113,14 @@ class LLMS_TXT_Generator {
         llms_txt_generator_admin_page_content();
     }
 
+    /**
+     * Register plugin settings
+     *
+     * Registers all settings fields used by the plugin.
+     *
+     * @since 1.0.0
+     * @return void
+     */
     public function register_settings() {
         // 設定を登録
         register_setting('llms_txt_generator_settings', 'llms_txt_generator_post_types');
@@ -88,6 +136,14 @@ class LLMS_TXT_Generator {
         register_setting('llms_txt_generator_uninstall_settings', 'llms_txt_generator_keep_settings');
     }
 
+    /**
+     * Handle the form submission to generate LLM text files
+     *
+     * Performs security checks, generates the files, and redirects back to the admin page.
+     *
+     * @since 1.0.0
+     * @return void
+     */
     public function handle_generate_llms_txt() {
         // 権限チェック
         if (!current_user_can('manage_options')) {
@@ -108,7 +164,14 @@ class LLMS_TXT_Generator {
     }
 
     /**
-     * llms.txtとllms-full.txtファイルを生成する
+     * Generate llms.txt and llms-full.txt files
+     *
+     * Creates two files in the WordPress root directory:
+     * - llms.txt: Contains only URLs of the selected post types
+     * - llms-full.txt: Contains URLs, titles, and content of the selected post types
+     *
+     * @since 1.0.0
+     * @return bool True on success, false on failure
      */
     private function generate_llms_txt_files() {
         global $wp_rewrite;
@@ -233,7 +296,14 @@ class LLMS_TXT_Generator {
     }
 
     /**
-     * 文字列がUTF-8エンコーディングであることを確認
+     * Ensures a string is properly encoded in UTF-8
+     *
+     * Detects the current encoding and converts to UTF-8 if necessary.
+     * Also removes any UTF-8 BOM markers.
+     *
+     * @since 1.0.0
+     * @param string $str The string to ensure is UTF-8 encoded
+     * @return string The UTF-8 encoded string
      */
     private function ensure_utf8($str) {
         // 文字列がnullまたは空の場合は空文字を返す
@@ -262,7 +332,16 @@ class LLMS_TXT_Generator {
     }
 
     /**
-     * URLがフィルター設定に基づいて許可されているかをチェック
+     * Check if a URL should be included based on filter settings
+     *
+     * Applies include/exclude pattern matching to determine if a URL should be included
+     * in the generated files. Also logs URL processing if debug mode is enabled.
+     *
+     * @since 1.0.0
+     * @param string $url The URL to check
+     * @param array $include_urls_array Array of URL patterns to include
+     * @param array $exclude_urls_array Array of URL patterns to exclude
+     * @return bool True if URL should be included, false otherwise
      */
     private function is_url_allowed($url, $include_urls_array, $exclude_urls_array) {
         // URLの正規化（末尾のスラッシュを削除）
@@ -327,7 +406,14 @@ class LLMS_TXT_Generator {
     }
 
     /**
-     * ワイルドカードパターンを正規表現に変換
+     * Convert wildcard pattern to regular expression
+     *
+     * Transforms wildcard patterns (using * as a wildcard) into regular expressions
+     * for pattern matching against URLs.
+     *
+     * @since 1.0.0
+     * @param string $pattern The wildcard pattern to convert
+     * @return string The resulting regular expression
      */
     private function wildcard_to_regex($pattern) {
         $pattern = preg_quote($pattern, '/');
@@ -336,7 +422,13 @@ class LLMS_TXT_Generator {
     }
 
     /**
-     * llms.txtファイルを表示するためのリクエストを処理
+     * Handle requests to view the generated llms.txt files
+     *
+     * Intercepts requests to the llms.txt and llms-full.txt files and serves them
+     * with appropriate headers.
+     *
+     * @since 1.0.0
+     * @return void
      */
     public function handle_view_llms_txt_files() {
         // llms.txt または llms-full.txt へのリクエストかどうかを確認
