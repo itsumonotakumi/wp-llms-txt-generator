@@ -1,5 +1,3 @@
-# Copyright (C) 2024 いつもの匠 (Original by rankth)
-# This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
 "Project-Id-Version: LLMS TXT and Full TXT Generator 1.9.2\n"
@@ -27,121 +25,109 @@ msgstr "Generate"
 msgid "ヘルプ"
 msgstr "Help"
 
-#: admin-page.php:20
+#: admin-page.php:24
 msgid "基本設定"
 msgstr "Basic Settings"
 
-#: admin-page.php:23
+#: admin-page.php:27
 msgid "投稿タイプを選択"
 msgstr "Select Post Types"
 
-#: admin-page.php:34
+#: admin-page.php:37
 msgid "生成するファイルに含める投稿タイプを選択してください。"
-msgstr "Select post types to include in the generated files."
+msgstr "Select which post types to include in the generated files."
 
-#: admin-page.php:38
+#: admin-page.php:41
 msgid "カスタムヘッダーテキスト"
 msgstr "Custom Header Text"
 
-#: admin-page.php:41
+#: admin-page.php:44
 msgid "このテキストはllms.txtとllms-full.txtファイルのURLリストの上に表示されます。"
 msgstr "This text will be displayed above the URL list in the llms.txt and llms-full.txt files."
 
-#: admin-page.php:45
+#: admin-page.php:48
 msgid "抜粋を含める"
 msgstr "Include Excerpts"
 
-#: admin-page.php:48
+#: admin-page.php:51
 msgid "llms-full.txtファイルに投稿の抜粋を含めます。"
 msgstr "Include post excerpts in the llms-full.txt file."
 
-#: admin-page.php:53
+#: admin-page.php:56
 msgid "更新設定"
 msgstr "Update Settings"
 
-#: admin-page.php:56
+#: admin-page.php:59
 msgid "投稿の変更時に自動更新"
 msgstr "Auto-update on Post Changes"
 
-#: admin-page.php:59
+#: admin-page.php:62
 msgid "有効にすると、投稿の追加・更新・削除時に自動的にLLMS.txtファイルが更新されます。"
 msgstr "When enabled, LLMS.txt files will be automatically updated when posts are added, updated, or deleted."
 
-#: admin-page.php:63
-msgid "デバッグモード"
-msgstr "Debug Mode"
-
 #: admin-page.php:66
-msgid "有効にすると、URLフィルタリングに関する詳細なログが生成されます。問題が発生した場合に役立ちます。"
-msgstr "When enabled, detailed logs will be generated for URL filtering. This is helpful for troubleshooting."
-
-#: admin-page.php:70
 msgid "定期的に自動生成"
 msgstr "Scheduled Generation"
 
-#: admin-page.php:73
+#: admin-page.php:69
 msgid "有効にすると、指定した頻度でLLMS.txtファイルが自動的に生成されます。"
 msgstr "When enabled, LLMS.txt files will be automatically generated at the specified frequency."
 
-#: admin-page.php:77
+#: admin-page.php:73
 msgid "自動生成の頻度"
-msgstr "Schedule Frequency"
+msgstr "Generation Frequency"
 
-#: admin-page.php:82
+#: admin-page.php:79
 msgid "毎時"
 msgstr "Hourly"
 
-#: admin-page.php:83
+#: admin-page.php:80
 msgid "1日2回"
 msgstr "Twice Daily"
 
-#: admin-page.php:84
+#: admin-page.php:81
 msgid "毎日"
 msgstr "Daily"
 
-#: admin-page.php:85
+#: admin-page.php:82
 msgid "毎週"
 msgstr "Weekly"
 
-#: admin-page.php:95
+#: admin-page.php:94
 msgid "LLMSファイルを自動生成する頻度を選択してください。"
-msgstr "Select the frequency for automatically generating LLMS files."
+msgstr "Select how often LLMS files should be automatically generated."
 
-#: admin-page.php:101
+#: admin-page.php:100
 msgid "フィルター設定"
 msgstr "Filter Settings"
 
-#: admin-page.php:104
+#: admin-page.php:103
 msgid "含めるURL"
 msgstr "Include URLs"
 
-#: admin-page.php:107
+#: admin-page.php:106
 msgid "含めるURLを1行に1つずつ入力してください。*をワイルドカードとして使用できます。空の場合はすべてのURLが含まれます。"
-msgstr "Enter URLs to include, one per line. You can use * as a wildcard. If empty, all URLs will be included."
+msgstr "Enter one URL per line to include. You can use * as a wildcard. If empty, all URLs will be included."
 
-#: admin-page.php:111
+#: admin-page.php:110
 msgid "除外するURL"
 msgstr "Exclude URLs"
 
-#: admin-page.php:114
+#: admin-page.php:113
 msgid "除外するURLを1行に1つずつ入力してください。*をワイルドカードとして使用できます。"
-msgstr "Enter URLs to exclude, one per line. You can use * as a wildcard."
+msgstr "Enter one URL per line to exclude. You can use * as a wildcard."
 
 #: admin-page.php:118
 msgid "設定を保存"
 msgstr "Save Settings"
 
-#: admin-page.php:124
+#: admin-page.php:124 admin-page.php:143
 msgid "LLMS.txtファイルを生成"
 msgstr "Generate LLMS.txt Files"
 
 #: admin-page.php:125
 msgid "下のボタンをクリックすると、現在の設定に基づいてllms.txtとllms-full.txtファイルを生成します。"
 msgstr "Click the button below to generate llms.txt and llms-full.txt files based on your current settings."
-
-#: admin-page.php:130
-msgid "LLMS.txtファイルを生成"
-msgstr "Generate LLMS.txt Files"
 
 #: admin-page.php:135
 msgid "ファイルステータス"
@@ -151,11 +137,11 @@ msgstr "File Status"
 msgid "LLMS.txtファイル: %s"
 msgstr "LLMS.txt File: %s"
 
-#: admin-page.php:145
+#: admin-page.php:145 admin-page.php:156
 msgid "最終更新日時: %s"
 msgstr "Last Updated: %s"
 
-#: admin-page.php:146
+#: admin-page.php:146 admin-page.php:157
 msgid "ファイルサイズ: %s"
 msgstr "File Size: %s"
 
@@ -166,14 +152,6 @@ msgstr "LLMS.txt file has not been generated yet."
 #: admin-page.php:155
 msgid "LLMS-Full.txtファイル: %s"
 msgstr "LLMS-Full.txt File: %s"
-
-#: admin-page.php:156
-msgid "最終更新日時: %s"
-msgstr "Last Updated: %s"
-
-#: admin-page.php:157
-msgid "ファイルサイズ: %s"
-msgstr "File Size: %s"
 
 #: admin-page.php:160
 msgid "LLMS-Full.txtファイルはまだ生成されていません。"
@@ -335,38 +313,34 @@ msgstr "Delete all settings when uninstalling"
 msgid "このオプションを有効にすると、プラグインをアンインストールする際にすべての設定が完全に削除されます。"
 msgstr "When this option is enabled, all settings will be completely removed when you uninstall the plugin."
 
-#: llms-txt-full-txt-generator.php:185
+#: wp-llms-txt-generator.php:185
 msgid "設定を保存するには、少なくとも1つの投稿タイプを選択する必要があります。"
 msgstr "You must select at least one post type to save the settings."
 
-#: llms-txt-full-txt-generator.php:197
+#: wp-llms-txt-generator.php:197
 msgid "LLMS TXT and Full TXT Generator 設定"
 msgstr "LLMS TXT and Full TXT Generator Settings"
 
-#: llms-txt-full-txt-generator.php:198
+#: wp-llms-txt-generator.php:198
 msgid "LLMS.txt生成設定"
 msgstr "LLMS.txt Generator Settings"
 
-#: llms-txt-full-txt-generator.php:214
+#: wp-llms-txt-generator.php:214 wp-llms-txt-generator.php:342
 msgid "LLMS.txtファイルが正常に生成されました。"
 msgstr "LLMS.txt files have been successfully generated."
 
-#: llms-txt-full-txt-generator.php:226
+#: wp-llms-txt-generator.php:226
 msgid "このページにアクセスするための十分な権限がありません。"
 msgstr "You do not have sufficient permissions to access this page."
 
-#: llms-txt-full-txt-generator.php:230
+#: wp-llms-txt-generator.php:230
 msgid "無効なnonceが指定されました"
 msgstr "Invalid nonce specified"
 
-#: llms-txt-full-txt-generator.php:258
+#: wp-llms-txt-generator.php:258
 msgid "投稿タイプが選択されていません。llms.txtとllms-full.txtの両方がクリアされました。"
 msgstr "No post types selected. Both llms.txt and llms-full.txt have been cleared."
 
-#: llms-txt-full-txt-generator.php:313
+#: wp-llms-txt-generator.php:313
 msgid "該当する投稿がありません。"
 msgstr "No relevant posts found."
-
-#: llms-txt-full-txt-generator.php:342
-msgid "LLMS.txtファイルが正常に生成されました。"
-msgstr "LLMS.txt files have been successfully generated."

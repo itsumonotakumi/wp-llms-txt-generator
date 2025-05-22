@@ -314,38 +314,38 @@ msgstr ""
 msgid "デバッグモードを有効にすると、URL処理の詳細ログが生成されます"
 msgstr ""
 
-#: llms-txt-full-txt-generator.php:185
+#: wp-llms-txt-generator.php:185
 msgid "設定を保存するには、少なくとも1つの投稿タイプを選択する必要があります。"
 msgstr ""
 
-#: llms-txt-full-txt-generator.php:197
+#: wp-llms-txt-generator.php:197
 msgid "LLMS TXT and Full TXT Generator 設定"
 msgstr ""
 
-#: llms-txt-full-txt-generator.php:198
+#: wp-llms-txt-generator.php:198
 msgid "LLMS.txt生成設定"
 msgstr ""
 
-#: llms-txt-full-txt-generator.php:214
+#: wp-llms-txt-generator.php:214
 msgid "LLMS.txtファイルが正常に生成されました。"
 msgstr ""
 
-#: llms-txt-full-txt-generator.php:226
+#: wp-llms-txt-generator.php:226
 msgid "このページにアクセスするための十分な権限がありません。"
 msgstr ""
 
-#: llms-txt-full-txt-generator.php:230
+#: wp-llms-txt-generator.php:230
 msgid "無効なnonceが指定されました"
 msgstr ""
 
-#: llms-txt-full-txt-generator.php:258
+#: wp-llms-txt-generator.php:258
 msgid "投稿タイプが選択されていません。llms.txtとllms-full.txtの両方がクリアされました。"
 msgstr ""
 
-#: llms-txt-full-txt-generator.php:313
+#: wp-llms-txt-generator.php:313
 msgid "該当する投稿がありません。"
 msgstr ""
 
-#: llms-txt-full-txt-generator.php:342
+#: wp-llms-txt-generator.php:342
 msgid "LLMS.txtファイルが正常に生成されました。"
 msgstr ""

@@ -133,6 +133,19 @@ GPL v2（元のプラグイン「LLMs-Full.txt and LLMs.txt Generator v1.9」を
    composer phpcbf
    ```
 
+## 翻訳と国際化
+
+このプラグインは完全に翻訳可能です。新しい言語を追加するには：
+
+1. POファイルをコピーし、言語コードを変更します（例：`wp-llms-txt-generator-fr_FR.po`）
+2. POエディタ（例：Poedit）でファイルを編集します
+3. MOファイルを生成します
+4. 両方のファイルを`languages`ディレクトリに配置します
+
+現在サポートされている言語：
+- 日本語（デフォルト）
+- 英語（en_US）
+
 ## 連絡先情報
 
 - メールアドレス: [llms-txt@takulog.info](mailto:llms-txt@takulog.info)
